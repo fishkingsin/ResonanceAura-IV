@@ -6,19 +6,17 @@
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : 9223372036854775807,
     "27A77809551FCD1B590FDD3DD0781E6A2166D366" : 9223372036854775807,
-    "AECFBD561E27AA75142CC3760E6EF1774F14CD24" : 9223372036854775807,
     "FB950DA91696DB40601A43AFF1A56B2E39217374" : 9223372036854775807
   },
-  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4EE937CF-E61F-4C61-905A-EB76A32D71E5",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "38D4C4F6-1793-48DB-AEEA-E4FD69CC51ED",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : "ResonanceAura-IV\/",
     "27A77809551FCD1B590FDD3DD0781E6A2166D366" : "..\/addons\/ofxLibApa102",
-    "AECFBD561E27AA75142CC3760E6EF1774F14CD24" : "..\/addons\/ofxIpVideoGrabber",
     "FB950DA91696DB40601A43AFF1A56B2E39217374" : "..\/addons\/ofxLibwebsockets"
   },
-  "DVTSourceControlWorkspaceBlueprintNameKey" : "ipVideoClient",
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "sharedCanvasClient",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
-  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ipVideoClient\/ipVideoClient.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "sharedCanvasClient\/sharedCanvasClient.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ofxLibApa102.git",
@@ -29,11 +27,6 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ResonanceAura-IV.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5"
-    },
-    {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/bakercp\/ofxIpVideoGrabber.git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "AECFBD561E27AA75142CC3760E6EF1774F14CD24"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/robotconscience\/ofxLibwebsockets.git",
