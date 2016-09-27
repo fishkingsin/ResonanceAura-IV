@@ -1,4 +1,3 @@
 ofxGui
 ofxLibwebsockets
-ofxTimer
 ofxXmlSettings
