@@ -251,7 +251,7 @@ void ofApp::saveDrawing(Drawing *drawing){
         {
             std::cout  << "Failed to parse"
             << reader.getFormattedErrorMessages();
-            return 0;
+            return ;
         }
         ofBuffer buffer;
         buffer.append(jsonString);
