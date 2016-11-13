@@ -1,0 +1,51 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : 9223372036854775807,
+    "999015EE524680C74335938659F70512196F22AD" : 9223372036854775807,
+    "27A77809551FCD1B590FDD3DD0781E6A2166D366" : 9223372036854775807,
+    "AECFBD561E27AA75142CC3760E6EF1774F14CD24" : 9223372036854775807,
+    "FB950DA91696DB40601A43AFF1A56B2E39217374" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0EACE3E4-AC52-4FFA-8C44-1B5D08824A0D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : "ResonanceAura-IV\/",
+    "999015EE524680C74335938659F70512196F22AD" : "..\/addons\/ofxAutoReloadedShader",
+    "27A77809551FCD1B590FDD3DD0781E6A2166D366" : "..\/addons\/ofxLibApa102",
+    "AECFBD561E27AA75142CC3760E6EF1774F14CD24" : "..\/addons\/ofxIpVideoGrabber",
+    "FB950DA91696DB40601A43AFF1A56B2E39217374" : "..\/addons\/ofxLibwebsockets"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "AutoShader",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "AutoShader\/AutoShader.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ofxLibApa102.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "27A77809551FCD1B590FDD3DD0781E6A2166D366"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ResonanceAura-IV.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/andreasmuller\/ofxAutoReloadedShader.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "999015EE524680C74335938659F70512196F22AD"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/bakercp\/ofxIpVideoGrabber.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "AECFBD561E27AA75142CC3760E6EF1774F14CD24"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/robotconscience\/ofxLibwebsockets.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "FB950DA91696DB40601A43AFF1A56B2E39217374"
+    }
+  ]
+}

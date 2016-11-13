@@ -273,71 +273,78 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
     try{
         cout<<"got message "<<args.message<<endl;
         // trace out string messages or JSON messages!
-        if ( !args.json.isNull() ){
-            if (!args.json["setup"].isNull()){
-                Drawing * d = new Drawing();
-                d->_id = args.json["setup"]["id"].asInt();
-                // for some reason these come across as strings via JSON.stringify!
-                int r = ofToInt(args.json["setup"]["color"]["r"].asString());
-                int g = ofToInt(args.json["setup"]["color"]["g"].asString());
-                int b = ofToInt(args.json["setup"]["color"]["b"].asString());
-                d->color.set(r, g, b);
-                drawings.insert( make_pair( d->_id, d ));
-                id = d->_id;
-                color.set(r, g, b);
-                cout << "setup with id:" << id << endl;
-                client.send( "{\"id\":"+ ofToString(id) + ",\"size\":{\"width\":\""+ ofToString(fbo.getWidth())+"\",\"height\":\""+ofToString(fbo.getHeight())+"\"}}");
-                
-            }else if(!args.json["delay"].isNull()){
-                cout << "delay:" << args.json["delay"].asInt() << endl;
-                microseconds = args.json["delay"].asInt();
-            }else if(!args.json["lineWidth"].isNull()){
-                cout << "lineWidth:" << args.json["lineWidth"].asInt() << endl;
-                lineWidth = args.json["lineWidth"].asInt();
-            }else if(!args.json["erase"].isNull()){
-                cout << "erase:" << args.json["erase"].asInt() << endl;
-                drawings.erase(args.json["erase"].asInt());
-                if(args.json["erase"]!=-1) {
-                    drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
-                } else {
-                    drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
-                }
-            }else if (args.json["id"].asInt() != id){
-                cout << "received point" << endl;
-                
-                
-                // for some reason these come across as strings via JSON.stringify!
-                int r = ofToInt(args.json["color"]["r"].asString());
-                int g = ofToInt(args.json["color"]["g"].asString());
-                int b = ofToInt(args.json["color"]["b"].asString());
-                ofColor color = ofColor( r, g, b );
-                
-                int _id = args.json["id"].asInt();
-                
-                map<int, Drawing*>::const_iterator it = drawings.find(_id);
-                Drawing * d;
-                if (it!=drawings.end()){
-                    d = it->second;
-                }
-                else {
-                    d = new Drawing();
-                    d->_id = _id;
+        if ( args.isBinary ){
+            buff.clear();
+            buff.set(args.data.getData(), args.data.size());
+            locked = true;
+            needToLoad = true;
+        } else {
+            if ( !args.json.isNull() ){
+                if (!args.json["setup"].isNull()){
+                    Drawing * d = new Drawing();
+                    d->_id = args.json["setup"]["id"].asInt();
+                    // for some reason these come across as strings via JSON.stringify!
+                    int r = ofToInt(args.json["setup"]["color"]["r"].asString());
+                    int g = ofToInt(args.json["setup"]["color"]["g"].asString());
+                    int b = ofToInt(args.json["setup"]["color"]["b"].asString());
+                    d->color.set(r, g, b);
+                    drawings.insert( make_pair( d->_id, d ));
+                    id = d->_id;
+                    color.set(r, g, b);
+                    cout << "setup with id:" << id << endl;
+                    client.send( "{\"id\":"+ ofToString(id) + ",\"size\":{\"width\":\""+ ofToString(fbo.getWidth())+"\",\"height\":\""+ofToString(fbo.getHeight())+"\"}}");
+                    
+                }else if(!args.json["delay"].isNull()){
+                    cout << "delay:" << args.json["delay"].asInt() << endl;
+                    microseconds = args.json["delay"].asInt();
+                }else if(!args.json["lineWidth"].isNull()){
+                    cout << "lineWidth:" << args.json["lineWidth"].asInt() << endl;
+                    lineWidth = args.json["lineWidth"].asInt();
+                }else if(!args.json["erase"].isNull()){
+                    cout << "erase:" << args.json["erase"].asInt() << endl;
+                    drawings.erase(args.json["erase"].asInt());
+                    if(args.json["erase"]!=-1) {
+                        drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
+                    } else {
+                        drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
+                    }
+                }else if (args.json["id"].asInt() != id){
+                    cout << "received point" << endl;
+                    
+                    
                     // for some reason these come across as strings via JSON.stringify!
                     int r = ofToInt(args.json["color"]["r"].asString());
                     int g = ofToInt(args.json["color"]["g"].asString());
                     int b = ofToInt(args.json["color"]["b"].asString());
-                    d->color.set(r, g, b);
-                    drawings.insert( make_pair( d->_id, d ));
-                    cout << "new drawing with id:" << _id << endl;
+                    ofColor color = ofColor( r, g, b );
+                    
+                    int _id = args.json["id"].asInt();
+                    
+                    map<int, Drawing*>::const_iterator it = drawings.find(_id);
+                    Drawing * d;
+                    if (it!=drawings.end()){
+                        d = it->second;
+                    }
+                    else {
+                        d = new Drawing();
+                        d->_id = _id;
+                        // for some reason these come across as strings via JSON.stringify!
+                        int r = ofToInt(args.json["color"]["r"].asString());
+                        int g = ofToInt(args.json["color"]["g"].asString());
+                        int b = ofToInt(args.json["color"]["b"].asString());
+                        d->color.set(r, g, b);
+                        drawings.insert( make_pair( d->_id, d ));
+                        cout << "new drawing with id:" << _id << endl;
+                    }
+                    
+                    if(!args.json["point"].isNull()){
+                        ofPoint point = ofPoint( args.json["point"]["x"].asInt(), args.json["point"]["y"].asInt() );
+                        d->addPoint(point);
+                    }
                 }
+            }else {
                 
-                if(!args.json["point"].isNull()){
-                    ofPoint point = ofPoint( args.json["point"]["x"].asInt(), args.json["point"]["y"].asInt() );
-                    d->addPoint(point);
-                }
             }
-        }else {
-            
         }
     }
     catch(exception& e){

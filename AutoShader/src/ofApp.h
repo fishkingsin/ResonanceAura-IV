@@ -27,7 +27,8 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    std::vector<std::shared_ptr<Video::IPVideoGrabber>> grabbers;
+    std::shared_ptr<Video::IPVideoGrabber> grabber;
     ofFbo LEDTexture;
     MyApa102 myApa102;
+    ofxAutoReloadedShader shader;
 };

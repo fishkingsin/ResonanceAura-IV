@@ -90,7 +90,7 @@ void MyApa102::threadedFunction(){
                 
                 
 #ifdef TARGET_OSX
-                ofLogVerbose("threadedFunction()") << "apa102.send(buf["<<x<<"], length);";
+//                ofLogVerbose("threadedFunction()") << "apa102.send(buf["<<x<<"], length);";
 #else
                 usleep(microseconds);
                 apa102.send(buf[x], length);

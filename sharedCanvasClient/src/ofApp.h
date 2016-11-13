@@ -10,6 +10,7 @@
 #else
 #include "ofxLibApa102.h"
 #endif
+#include "ofxTurboJpeg.h"
 class ofApp : public ofBaseApp , ofThread{
 
 	public:
@@ -59,4 +60,10 @@ class ofApp : public ofBaseApp , ofThread{
         int width ;
         int height;
     int lineWidth;
+    
+    ofxTurboJpeg turbo;
+    ofImage incoming;
+    
+    bool needToLoad, locked;
+    ofBuffer buff;
 };

@@ -3,7 +3,9 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
+#ifdef TARGET_OSX
+    ofSetLogLevel(OF_LOG_VERBOSE);
+#endif
     auto c = std::make_shared<Video::IPVideoGrabber>();
     
     ofxXmlSettings settings;
@@ -13,94 +15,106 @@ void ofApp::setup(){
     c->setURI(uri);
     c->connect();
     
-    grabbers.push_back(c);
+    grabber = c;
     
     LEDTexture.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
     
     myApa102.setup(&LEDTexture);
+#ifdef TARGET_OPENGLES
+    shader.load("shadersES2/shader");
+#else
+    if(ofIsGLProgrammableRenderer()){
+        shader.load("shadersGL3/shader");
+    }else{
+        shader.load("shadersGL2/shader");
+    }
+    
+#endif
+    shader.enableWatchFiles();
 }
 void ofApp::exit(){
     myApa102.stop();
 }
 //--------------------------------------------------------------
 void ofApp::update(){
-    for(std::size_t i = 0; i < grabbers.size(); i++)
-    {
-        grabbers[i]->update();
-    }
-     myApa102.update();
+    shader.setUniform3f("iResolution",640,480,0);
+    shader.setUniform1f("iGlobalTime", ofGetFrameNum());
+    grabber->update();
+    
+    myApa102.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
     LEDTexture.begin();
+    shader.begin();
     ofClear(255,255,255, 0);
     
     
     ofSetColor(255,255,255,255);
-    for(std::size_t i = 0; i < grabbers.size(); i++)
-    {
-        grabbers[i]->draw(0,0,ofGetWidth(),ofGetHeight());
-    }
+    
+    grabber->draw(0,0,ofGetWidth(),ofGetHeight());
+    shader.end();
     LEDTexture.end();
     
-    
+    shader.begin();
     LEDTexture.draw(0,0);
+    shader.end();
     
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseEntered(int x, int y){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseExited(int x, int y){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
-
+    
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+void ofApp::dragEvent(ofDragInfo dragInfo){
+    
 }
