@@ -66,4 +66,8 @@ class ofApp : public ofBaseApp , ofThread{
     
     bool needToLoad, locked;
     ofBuffer buff;
+    
+    ofPath maskPath;
+    ofFbo maskFbo;
+
 };

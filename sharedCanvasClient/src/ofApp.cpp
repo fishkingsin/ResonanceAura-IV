@@ -70,6 +70,8 @@ void ofApp::setup(){
     }
     startThread();
     lineWidth = 1;
+    needToLoad = false;
+    locked = false;
 }
 void ofApp::exit(){
     
@@ -164,6 +166,12 @@ void ofApp::update(){
     }
     //end check - basara
     ofFill();
+    if ( incoming.isAllocated() ){
+        ofPushStyle();
+        ofSetColor(255);
+        incoming.draw(0,0);
+        ofPopStyle();
+    }
     largeFbo.end();
     //draw incoming drawing
     
@@ -188,6 +196,18 @@ void ofApp::update(){
             buf[x][index+2] = GAMMA[c.g];
             buf[x][index+3] = GAMMA[c.r];
         }
+    }
+    
+    if ( needToLoad ){
+        // you can write this directly to a file!
+        //        ofFile test;
+        //        test.open("data.jpg", ofFile::WriteOnly);
+        //        test.writeFromBuffer(buff);
+        //        test.close();
+        
+        turbo.load(buff, incoming);
+        needToLoad = false;
+        locked = false;
     }
 }
 
@@ -274,10 +294,12 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
         cout<<"got message "<<args.message<<endl;
         // trace out string messages or JSON messages!
         if ( args.isBinary ){
+            if ( locked ) return;
             buff.clear();
             buff.set(args.data.getData(), args.data.size());
             locked = true;
             needToLoad = true;
+            cout<<"locked "<<locked << " | needToLoad "<<needToLoad<<endl;
         } else {
             if ( !args.json.isNull() ){
                 if (!args.json["setup"].isNull()){
@@ -410,6 +432,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
     
 }

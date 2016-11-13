@@ -4,29 +4,29 @@
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : 9223372036854775807,
-    "27A77809551FCD1B590FDD3DD0781E6A2166D366" : 9223372036854775807,
-    "FB950DA91696DB40601A43AFF1A56B2E39217374" : 9223372036854775807
+    "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : 0,
+    "FB950DA91696DB40601A43AFF1A56B2E39217374" : 0,
+    "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : 0
   },
-  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "38D4C4F6-1793-48DB-AEEA-E4FD69CC51ED",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "5DFE6511-9F18-440D-B1C9-0387B67026AD",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : "ResonanceAura-IV\/",
-    "27A77809551FCD1B590FDD3DD0781E6A2166D366" : "..\/addons\/ofxLibApa102",
-    "FB950DA91696DB40601A43AFF1A56B2E39217374" : "..\/addons\/ofxLibwebsockets"
+    "FB950DA91696DB40601A43AFF1A56B2E39217374" : "..\/addons\/ofxLibwebsockets",
+    "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : "..\/addons\/ofxTurboJpeg"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "sharedCanvasClient",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "sharedCanvasClient\/sharedCanvasClient.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ofxLibApa102.git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "27A77809551FCD1B590FDD3DD0781E6A2166D366"
-    },
-    {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ResonanceAura-IV.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fishkingsin\/ofxTurboJpeg.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/robotconscience\/ofxLibwebsockets.git",
