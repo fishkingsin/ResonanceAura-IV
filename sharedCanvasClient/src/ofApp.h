@@ -71,7 +71,10 @@ class ofApp : public ofBaseApp , ofThread{
     
     ofPath maskPath;
     ofFbo maskFbo;
-    
+#if defined(TARGET_OSX) || defined(TARGET_LINUX_ARM)
+    ofShader shader;
+#else
     ofxAutoReloadedShader shader;
+#endif
 
 };
