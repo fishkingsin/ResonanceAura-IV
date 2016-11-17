@@ -153,7 +153,17 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
     
     try{
         // trace out string messages or JSON messages!
-        if ( !args.json.isNull() ){
+        if(args.isBinary){
+            cout<< "isBinary "<<endl;
+            vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
+            for ( int i=0; i<connections.size(); i++){
+                if ( (*connections[i]) != args.conn ){
+                    connections[i]->sendBinary(args.data);
+                }
+            }
+            
+        }
+        else if ( !args.json.isNull() ){
             if(args.json["erase"].isNull()) {
                 ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
                 
@@ -327,23 +337,23 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-//    ofPoint p(x,y);
-//    
-//    map<int, Drawing*>::iterator it = drawings.find(0);
-//    Drawing * d = it->second;
-//    d->addPoint(p);
-//    server.send( "{\"id\":-1,\"point\":{\"x\":\""+ ofToString(x)+"\",\"y\":\""+ofToString(y)+"\"}," + d->getColorJSON() +"}");
+    //    ofPoint p(x,y);
+    //
+    //    map<int, Drawing*>::iterator it = drawings.find(0);
+    //    Drawing * d = it->second;
+    //    d->addPoint(p);
+    //    server.send( "{\"id\":-1,\"point\":{\"x\":\""+ ofToString(x)+"\",\"y\":\""+ofToString(y)+"\"}," + d->getColorJSON() +"}");
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
     
-//    ofPoint p(x,y);
-//    
-//    map<int, Drawing*>::iterator it = drawings.find(0);
-//    Drawing * d = it->second;
-//    d->addPoint(p);
-//    server.send( "{\"id\":-1,\"point\":{\"x\":\""+ ofToString(x)+"\",\"y\":\""+ofToString(y)+"\"}," + d->getColorJSON() +"}");
+    //    ofPoint p(x,y);
+    //
+    //    map<int, Drawing*>::iterator it = drawings.find(0);
+    //    Drawing * d = it->second;
+    //    d->addPoint(p);
+    //    server.send( "{\"id\":-1,\"point\":{\"x\":\""+ ofToString(x)+"\",\"y\":\""+ofToString(y)+"\"}," + d->getColorJSON() +"}");
 }
 
 //--------------------------------------------------------------

@@ -2,7 +2,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 #ifdef TARGET_OSX
-    ofSetLogLevel(OF_LOG_VERBOSE);
+//    ofSetLogLevel(OF_LOG_VERBOSE);
 #endif
     ofxXmlSettings settings;
     
