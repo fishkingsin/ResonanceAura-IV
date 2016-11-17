@@ -1,7 +1,9 @@
 #include "ofApp.h"
 //--------------------------------------------------------------
 void ofApp::setup(){
+#ifdef TARGET_OSX
     ofSetLogLevel(OF_LOG_VERBOSE);
+#endif
     ofxXmlSettings settings;
     
     ofxLibwebsockets::ClientOptions options = ofxLibwebsockets::defaultClientOptions();
