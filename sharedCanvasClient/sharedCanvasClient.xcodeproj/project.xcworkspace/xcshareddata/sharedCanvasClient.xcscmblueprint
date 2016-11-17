@@ -4,15 +4,17 @@
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : 0,
-    "FB950DA91696DB40601A43AFF1A56B2E39217374" : 0,
-    "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : 0
+    "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : 9223372036854775807,
+    "999015EE524680C74335938659F70512196F22AD" : 9223372036854775807,
+    "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : 9223372036854775807,
+    "FB950DA91696DB40601A43AFF1A56B2E39217374" : 9223372036854775807
   },
-  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "5DFE6511-9F18-440D-B1C9-0387B67026AD",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "33771687-F2AD-4DB9-8AF9-B9EAF36C5C3D",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : "ResonanceAura-IV\/",
-    "FB950DA91696DB40601A43AFF1A56B2E39217374" : "..\/addons\/ofxLibwebsockets",
-    "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : "..\/addons\/ofxTurboJpeg"
+    "999015EE524680C74335938659F70512196F22AD" : "..\/addons\/ofxAutoReloadedShader",
+    "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : "..\/addons\/ofxTurboJpeg",
+    "FB950DA91696DB40601A43AFF1A56B2E39217374" : "..\/addons\/ofxLibwebsockets"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "sharedCanvasClient",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -22,6 +24,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ResonanceAura-IV.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/andreasmuller\/ofxAutoReloadedShader.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "999015EE524680C74335938659F70512196F22AD"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/fishkingsin\/ofxTurboJpeg.git",

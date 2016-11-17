@@ -1,4 +1,5 @@
-ofxLibApa102
+ofxAutoReloadedShader
 ofxLibwebsockets
 ofxTurboJpeg
 ofxXmlSettings
+ofxLipApa102

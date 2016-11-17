@@ -11,6 +11,7 @@
 #include "ofxLibApa102.h"
 #endif
 #include "ofxTurboJpeg.h"
+#include "ofxAutoReloadedShader.h"
 class ofApp : public ofBaseApp , ofThread{
 
 	public:
@@ -63,11 +64,14 @@ class ofApp : public ofBaseApp , ofThread{
     
     ofxTurboJpeg turbo;
     ofImage incoming;
+    ofTexture texture;
     
     bool needToLoad, locked;
     ofBuffer buff;
     
     ofPath maskPath;
     ofFbo maskFbo;
+    
+    ofxAutoReloadedShader shader;
 
 };

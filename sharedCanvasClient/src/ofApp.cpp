@@ -1,7 +1,7 @@
 #include "ofApp.h"
 //--------------------------------------------------------------
 void ofApp::setup(){
-    //     ofSetLogLevel(OF_LOG_VERBOSE);
+         ofSetLogLevel(OF_LOG_VERBOSE);
     ofxXmlSettings settings;
     
     ofxLibwebsockets::ClientOptions options = ofxLibwebsockets::defaultClientOptions();
@@ -72,6 +72,22 @@ void ofApp::setup(){
     lineWidth = 1;
     needToLoad = false;
     locked = false;
+    
+#ifdef TARGET_OSX
+    incoming.load("sample.jpg");
+    
+#endif
+#ifdef TARGET_OPENGLES
+    shader.load("shadersES2/shader");
+#else
+    if(ofIsGLProgrammableRenderer()){
+        shader.load("shadersGL3/shader");
+    }else{
+        shader.load("shadersGL2/shader");
+    }
+    
+#endif
+    shader.enableWatchFiles();
 }
 void ofApp::exit(){
     
@@ -88,6 +104,7 @@ void ofApp::exit(){
 #else
     apa102.send(buf[0], length);
 #endif
+
 }
 
 void ofApp::threadedFunction(){
@@ -166,19 +183,30 @@ void ofApp::update(){
     }
     //end check - basara
     ofFill();
-    if ( incoming.isAllocated() ){
+    if ( texture.isAllocated() ){
         ofPushStyle();
         ofSetColor(255);
-        incoming.draw(0,0);
+        int h = ofGetHeight()/2;
+        int w = ofGetWidth()/4;
+        for(int i = 0 ; i < 8 ; i++){
+            
+            texture.draw((i%4)*w,(i/4)*h,w,h);
+        }
+        
         ofPopStyle();
     }
     largeFbo.end();
     //draw incoming drawing
     
     //draw small canvas drawing
+    
     fbo.begin();
     ofClear(0,0,0);
+    shader.begin();
+    shader.setUniform3f("iResolution",ofGetWidth(), ofGetHeight(),0);
+    shader.setUniform1i("iGlobalTime", ofGetElapsedTimeMillis()%ofGetWidth());
     largeFbo.draw(0,0,fbo.getWidth(),fbo.getHeight());
+    shader.end();
     fbo.end();
     //draw small canvas drawing
     fbo.readToPixels(pixels);
@@ -206,6 +234,7 @@ void ofApp::update(){
         //        test.close();
         
         turbo.load(buff, incoming);
+        texture.loadData(incoming.getPixels().getData(), incoming.getWidth(), incoming.getHeight(), GL_RGB);
         needToLoad = false;
         locked = false;
     }
