@@ -6,10 +6,9 @@ uniform sampler2D tex0;
 uniform float iGlobalTime;
 varying vec2 texCoordVarying;
 uniform vec3 iResolution ;
+float PI = 3.141592658;
 
-const float PI = 3.141592658;
-const float TAU = 2.0 * PI;
-const float sections = 10.0;
+// const float sections = 10.0;
 
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
