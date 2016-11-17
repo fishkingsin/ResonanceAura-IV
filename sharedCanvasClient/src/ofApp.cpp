@@ -62,8 +62,7 @@ void ofApp::setup(){
     //    fbo.getTexture().setTextureWrap(GL_REPEAT,GL_REPEAT);
     //    fbo.allocate(width,height,GL_RGB);
     fbo.allocate(ofGetWidth(),ofGetHeight(),GL_RGB);
-#if  TARGET_OSX
-#else
+#if defined(TARGET_OPENGLES)
     apa102.setup(fbo.getHeight());
 #endif
     
@@ -98,7 +97,7 @@ void ofApp::setup(){
     
     
 #endif
-#if defined(TARGET_OSX) || defined(TARGET_LINUX_ARM)
+#if defined(TARGET_LINUX_ARM)
     ofLogWarning() << "TARGET_OPENGLES ";
     shader.load("shadersES2/shader");
 #else
@@ -107,9 +106,9 @@ void ofApp::setup(){
     }else{
         shader.load("shadersGL2/shader");
     }
-    
-#endif
     shader.enableWatchFiles();
+#endif
+    
 }
 void ofApp::exit(){
     
