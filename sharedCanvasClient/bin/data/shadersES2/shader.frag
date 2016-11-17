@@ -4,11 +4,12 @@ precision highp float;
 uniform sampler2D tex0;
 
 varying vec2 texCoordVarying;
+uniform float iGlobalTime;
 vec4 iResolution ;
 void main()
 {
 	iResolution = texCoordVarying;
-    mainImage(gl_FragColor, glFragCoord);
+  mainImage(gl_FragColor, texCoordVarying);
 }
 
 const float PI = 3.141592658;
@@ -16,24 +17,18 @@ const float TAU = 2.0 * PI;
 const float sections = 10.0;
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
-  vec2 pos = vec2(fragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
-
-  float rad = length(pos);
-  float angle = atan(pos.y, pos.x);
-
-  float ma = mod(angle, TAU/sections);
-  ma = abs(ma - PI/sections);
-  
-  float x = cos(ma) * rad;
-  float y = sin(ma) * rad;
-	
-  float time = iGlobalTime/10.0;
-  
-  fragColor = texture2D(iChannel0, vec2(x-time, y-time));
+  vec2 uv = fragCoord.xy;
+  float delta = sin(iGlobalTime*PI*0.03);
+  float delta2 = sin(iGlobalTime*PI*0.07);
+  float delta3 = sin(iGlobalTime*PI*0.01);
+  float delta4 = sin(iGlobalTime*PI*0.02);
+  vec2 OVal = uv+vec2(((fragCoord.y>0.5)? delta : delta2), ((fragCoord.y>0.5)? delta3 : delta4));
+ 
+  fragColor = texture2D(tex0, OVal);
 }
 
-float Tile1D(float p, float a){
-  p -= 4.0 * a * floor(p/4.0 * a);
-  p -= 2.* max(p - 2.0 * a , 0.0);
-  return p;
-}
+// float Tile1D(float p, float a){
+//   p -= 4.0 * a * floor(p/4.0 * a);
+//   p -= 2.* max(p - 2.0 * a , 0.0);
+//   return p;
+// }

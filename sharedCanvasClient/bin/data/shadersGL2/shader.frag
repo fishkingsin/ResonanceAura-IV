@@ -1,9 +1,9 @@
 #version 120
 
 // this is how we receive the texture
-uniform sampler2DRect tex0;
+uniform sampler2D tex0;
 
-uniform int iGlobalTime;
+uniform float iGlobalTime;
 varying vec2 texCoordVarying;
 uniform vec3 iResolution ;
 
@@ -14,11 +14,13 @@ const float sections = 10.0;
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ){
   vec2 uv = fragCoord.xy;
-  // vec2 output = uv+vec2(iGlobalTime, 0);
-  
-  vec2 OVal = uv+vec2(iGlobalTime/100.0, 0);
+  float delta = sin(iGlobalTime*PI*0.03);
+  float delta2 = sin(iGlobalTime*PI*0.07);
+  float delta3 = sin(iGlobalTime*PI*0.01);
+  float delta4 = sin(iGlobalTime*PI*0.02);
+  vec2 OVal = uv+vec2(((fragCoord.y>0.5)? delta : delta2), ((fragCoord.y>0.5)? delta3 : delta4));
  
-  fragColor = texture2DRect(tex0, OVal);
+  fragColor = texture2D(tex0, OVal);
 }
 
 float Tile1D(float p, float a){
@@ -28,7 +30,6 @@ float Tile1D(float p, float a){
 }
 void main()
 {
-	// gl_FragColor = texture2DRect(tex0, texCoordVarying);
     mainImage(gl_FragColor, texCoordVarying);
 }
 

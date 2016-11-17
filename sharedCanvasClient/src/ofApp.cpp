@@ -1,7 +1,7 @@
 #include "ofApp.h"
 //--------------------------------------------------------------
 void ofApp::setup(){
-         ofSetLogLevel(OF_LOG_VERBOSE);
+    ofSetLogLevel(OF_LOG_VERBOSE);
     ofxXmlSettings settings;
     
     ofxLibwebsockets::ClientOptions options = ofxLibwebsockets::defaultClientOptions();
@@ -45,9 +45,21 @@ void ofApp::setup(){
     for ( int i = 0 ; i < 256 ; i++){
         GAMMA[i] = int(pow(float(i) / 255.0, 2.7) * 255.0  * 0.1 + 0.5) ;
     }
+    ofFbo::Settings _settings;
+    _settings.width =				width;
+    _settings.height =					height;
+    _settings.textureTarget =			GL_TEXTURE_2D;
+    _settings.internalformat =			GL_RGBA;
+    _settings.wrapModeHorizontal =		GL_REPEAT;
+    _settings.wrapModeVertical =		GL_REPEAT;
+    _settings.minFilter =				GL_LINEAR;
+    _settings.maxFilter =				GL_LINEAR;
     
-    fbo.allocate(width,height,GL_RGB);
-    largeFbo.allocate(ofGetWidth(),ofGetHeight(),GL_RGB);
+    
+    largeFbo.allocate(_settings);
+    //    fbo.getTexture().setTextureWrap(GL_REPEAT,GL_REPEAT);
+    //    fbo.allocate(width,height,GL_RGB);
+    fbo.allocate(ofGetWidth(),ofGetHeight(),GL_RGB);
 #ifdef TARGET_OSX
 #else
     apa102.setup(fbo.getHeight());
@@ -72,9 +84,16 @@ void ofApp::setup(){
     lineWidth = 1;
     needToLoad = false;
     locked = false;
+    ofDisableArbTex();
     
+    
+    //    fbo.getTexture().getTextureData().textureTarget = GL_TEXTURE_2D;
 #ifdef TARGET_OSX
+    
     incoming.load("sample.jpg");
+    incoming.resize(64,64);
+    texture.loadData(incoming.getPixels().getData(), incoming.getWidth(), incoming.getHeight(), GL_RGB);
+    
     
 #endif
 #ifdef TARGET_OPENGLES
@@ -104,7 +123,7 @@ void ofApp::exit(){
 #else
     apa102.send(buf[0], length);
 #endif
-
+    
 }
 
 void ofApp::threadedFunction(){
@@ -203,8 +222,9 @@ void ofApp::update(){
     fbo.begin();
     ofClear(0,0,0);
     shader.begin();
+//    shader.setUniformTexture("tex0", fbo.getTexture(0), 0);
     shader.setUniform3f("iResolution",ofGetWidth(), ofGetHeight(),0);
-    shader.setUniform1i("iGlobalTime", ofGetElapsedTimeMillis()%ofGetWidth());
+    shader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
     largeFbo.draw(0,0,fbo.getWidth(),fbo.getHeight());
     shader.end();
     fbo.end();

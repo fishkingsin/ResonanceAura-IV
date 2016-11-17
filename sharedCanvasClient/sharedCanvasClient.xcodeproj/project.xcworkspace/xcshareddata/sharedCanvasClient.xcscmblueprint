@@ -6,13 +6,15 @@
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : 9223372036854775807,
     "999015EE524680C74335938659F70512196F22AD" : 9223372036854775807,
+    "27A77809551FCD1B590FDD3DD0781E6A2166D366" : 9223372036854775807,
     "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : 9223372036854775807,
     "FB950DA91696DB40601A43AFF1A56B2E39217374" : 9223372036854775807
   },
-  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "33771687-F2AD-4DB9-8AF9-B9EAF36C5C3D",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "709B103B-431B-47B1-8982-CB0C7C46A626",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "38DF9BB5F52E40691ED43C98F30FF0BB836F06C5" : "ResonanceAura-IV\/",
     "999015EE524680C74335938659F70512196F22AD" : "..\/addons\/ofxAutoReloadedShader",
+    "27A77809551FCD1B590FDD3DD0781E6A2166D366" : "..\/addons\/ofxLibApa102",
     "E5D2BF07F1BD4888430F12ADB292E9A68C0BFC76" : "..\/addons\/ofxTurboJpeg",
     "FB950DA91696DB40601A43AFF1A56B2E39217374" : "..\/addons\/ofxLibwebsockets"
   },
@@ -20,6 +22,11 @@
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "sharedCanvasClient\/sharedCanvasClient.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ofxLibApa102.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "27A77809551FCD1B590FDD3DD0781E6A2166D366"
+    },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:fishkingsin\/ResonanceAura-IV.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
