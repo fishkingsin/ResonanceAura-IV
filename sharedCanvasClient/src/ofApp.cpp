@@ -99,6 +99,7 @@ void ofApp::setup(){
     
 #endif
 #ifdef TARGET_OPENGLES
+    ofLogWarning() << "TARGET_OPENGLES ";
     shader.load("shadersES2/shader");
 #else
     if(ofIsGLProgrammableRenderer()){
