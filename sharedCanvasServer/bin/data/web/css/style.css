@@ -33,4 +33,33 @@ hr {
 }
 body {
     overflow: hidden;
+    background-color: black;
+}
+
+#drawIcon {
+	display: block;
+	position: absolute;
+	right:0;
+	top:0;
+}
+
+#circleIcon {
+	display: block;
+	position: absolute;
+	right:0;
+	top:150px;
+}
+
+#triIcon {
+	display: block;
+	position: absolute;
+	right:0;
+	top:300px;
+}
+
+#okIcon {
+	display: block;
+	position: absolute;
+	right:0;
+	top:450px;
 }
