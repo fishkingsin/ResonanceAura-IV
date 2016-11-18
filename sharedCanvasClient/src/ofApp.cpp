@@ -373,15 +373,17 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
                 }else if(!args.json["lineWidth"].isNull()){
                     cout << "lineWidth:" << args.json["lineWidth"].asInt() << endl;
                     lineWidth = args.json["lineWidth"].asInt();
-                }else if(!args.json["erase"].isNull()){
-                    cout << "erase:" << args.json["erase"].asInt() << endl;
-                    drawings.erase(args.json["erase"].asInt());
-                    if(args.json["erase"]!=-1) {
-                        drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
-                    } else {
-                        drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
-                    }
-                }else if (args.json["id"].asInt() != id){
+                }
+//                else if(!args.json["erase"].isNull()){
+//                    cout << "erase:" << args.json["erase"].asInt() << endl;
+//                    drawings.erase(args.json["erase"].asInt());
+//                    if(args.json["erase"]!=-1) {
+//                        drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
+//                    } else {
+//                        drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
+//                    }
+//                }
+                else if (args.json["id"].asInt() != id){
                     cout << "received point" << endl;
                     
                     
