@@ -404,24 +404,4 @@ function saveCanvas() {
 	canvasG.toBlob(function(blob) {			
 		socket.send(blob);
 	}, "image/jpeg", 1);
-	// canvasG.toBlob(
-	//     function (newBlob) {
-	//       expect(newBlob.type).to.equal('image/jpeg')
-	//       done()
-	//       socket.send(blob);
-	//     },
-	//     'image/jpeg'
-	//   )
-
-	// $.ajax({
-	//   type: "POST",
-	//   url: "upload.php",
-	//   data: { 
-	//      imgBase64: dataURL
-	//   }
-	// }).done(function(o) {
-	//   console.log('saved'); 
-
-	// });
-
 }
