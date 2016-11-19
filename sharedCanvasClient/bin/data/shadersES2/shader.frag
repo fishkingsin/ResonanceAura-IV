@@ -16,7 +16,7 @@ void main()
 {
 	vec2 fragCoord = texCoordVarying;
 	vec2 uv = fragCoord.xy;
-	float d = (-scale*abs(sin(0.01 * iGlobalTime)+2));
+	float d = (-scale*abs(sin(0.01 * iGlobalTime)));
 	float scale_uv_x = uv.x * d; 
 	float scale_uv_y = uv.y * d; 
 
