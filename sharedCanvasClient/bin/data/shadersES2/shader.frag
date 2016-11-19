@@ -15,6 +15,7 @@ uniform float scale;
 void main()
 {
 	vec2 fragCoord = texCoordVarying;
+	vec2 uv = fragCoord.xy;
 	uv *= -scale*abs(sin(0.01 * iGlobalTime)+2); 
 
 	float delta = sin(iGlobalTime*PI*0.04);
