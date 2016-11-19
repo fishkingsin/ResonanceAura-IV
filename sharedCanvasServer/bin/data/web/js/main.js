@@ -276,7 +276,7 @@ function drawLine() {
 	for(var i=0;i<lineArray.length;i++) {
 		ctx.beginPath();
 		ctx.strokeStyle="#FFFFFF";
-		ctx.lineWidth=6;
+		ctx.lineWidth=10;
 		ctx.moveTo(lineArray[i].x,lineArray[i].y);
 		ctx.lineTo(lineArray[i].x2, lineArray[i].y2);
 		ctx.stroke();
@@ -296,7 +296,7 @@ function drawCircle() {
 	for(var i=0;i<cirArray.length;i++) {
 		ctx.beginPath();
 		ctx.strokeStyle="#FFFFFF";
-		ctx.lineWidth=1;
+		ctx.lineWidth=10;
 		ctx.arc(cirArray[i].x, cirArray[i].y,cirArray[i].r, 0, 2*Math.PI);
 		ctx.stroke();
 	}
@@ -357,7 +357,7 @@ function setupSocket(){
 
 		// received message
 		_socket.onmessage =function got_packet(msg) {
-			//console.log(msg.data);
+			console.log(msg);
 			var message = JSON.parse(msg.data);
 
 			if ( message.setup ){
@@ -400,7 +400,7 @@ function setupSocket(){
 }
 
 function saveCanvas() {
-	console.log("saveCanvas");
+	// console.log("saveCanvas");
 	var canvasG = document.getElementById("sketchCanvas");
 	//ctx.scale(0.5,0.5);
 	if(canvasG.toBlob){
