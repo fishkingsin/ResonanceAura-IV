@@ -76,5 +76,6 @@ class ofApp : public ofBaseApp , ofThread{
 #else
     ofxAutoReloadedShader shader;
 #endif
+    float targetScale,scale;
 
 };

@@ -2,8 +2,9 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 #ifdef TARGET_OSX
-//    ofSetLogLevel(OF_LOG_VERBOSE);
+    //    ofSetLogLevel(OF_LOG_VERBOSE);
 #endif
+    scale = targetScale = 1;
     ofxXmlSettings settings;
     
     ofxLibwebsockets::ClientOptions options = ofxLibwebsockets::defaultClientOptions();
@@ -208,12 +209,19 @@ void ofApp::update(){
         ofPushStyle();
         ofSetColor(255);
         int h = ofGetHeight()/2;
-        int w = ofGetWidth()/4;
-        for(int i = 0 ; i < 8 ; i++){
-            
-            texture.draw((i%4)*w,(i/4)*h,w,h);
-        }
+        int w = ofGetWidth()/2;
+        //        for(int i = 0 ; i < 8 ; i++){
+        //
+        //            texture.draw((i%4)*w,(i/4)*h,w,h);
+        //        }
+        ofPushMatrix();
+        scale += (targetScale - scale) * 0.05;
         
+        ofTranslate(w, h);
+        ofScale(scale,scale,scale);
+        ofTranslate(-w, -h);
+        texture.draw(0,0,ofGetWidth(),ofGetHeight());
+        ofPopMatrix();
         ofPopStyle();
     }
     largeFbo.end();
@@ -224,9 +232,10 @@ void ofApp::update(){
     fbo.begin();
     ofClear(0,0,0);
     shader.begin();
-//    shader.setUniformTexture("tex0", fbo.getTexture(0), 0);
+    //    shader.setUniformTexture("tex0", fbo.getTexture(0), 0);
     shader.setUniform3f("iResolution",ofGetWidth(), ofGetHeight(),0);
     shader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
+    shader.setUniform1f("scale",scale);
     largeFbo.draw(0,0,fbo.getWidth(),fbo.getHeight());
     shader.end();
     fbo.end();
@@ -259,6 +268,7 @@ void ofApp::update(){
         texture.loadData(incoming.getPixels().getData(), incoming.getWidth(), incoming.getHeight(), GL_RGB);
         needToLoad = false;
         locked = false;
+        targetScale = ofRandom(0.8,1.2);
     }
 }
 
@@ -374,15 +384,15 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
                     cout << "lineWidth:" << args.json["lineWidth"].asInt() << endl;
                     lineWidth = args.json["lineWidth"].asInt();
                 }
-//                else if(!args.json["erase"].isNull()){
-//                    cout << "erase:" << args.json["erase"].asInt() << endl;
-//                    drawings.erase(args.json["erase"].asInt());
-//                    if(args.json["erase"]!=-1) {
-//                        drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
-//                    } else {
-//                        drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
-//                    }
-//                }
+                //                else if(!args.json["erase"].isNull()){
+                //                    cout << "erase:" << args.json["erase"].asInt() << endl;
+                //                    drawings.erase(args.json["erase"].asInt());
+                //                    if(args.json["erase"]!=-1) {
+                //                        drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
+                //                    } else {
+                //                        drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
+                //                    }
+                //                }
                 else if (args.json["id"].asInt() != id){
                     cout << "received point" << endl;
                     
@@ -434,6 +444,9 @@ void ofApp::onBroadcast( ofxLibwebsockets::Event& args ){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    if(key == '1'){
+        targetScale = ofRandom(0.8,1.2);
+    }
 }
 
 //--------------------------------------------------------------
