@@ -17,42 +17,43 @@ var dMode = 1;
 //line
 var lineArray = [];
 function Line() {
-  this.x = 0;
-  this.y = 0;
-  this.x2 = 0;
-  this.y2 = 0; 
+	this.x = 0;
+	this.y = 0;
+	this.x2 = 0;
+	this.y2 = 0; 
 }
 
 function addLine(x, y) {
-  var l = new Line;
-  l.x = x;
-  l.y = y;
-  l.x2 = x;
-  l.y2 = y;
-  lineArray.push(l);
+	var l = new Line;
+	l.x = x;
+	l.y = y;
+	l.x2 = x;
+	l.y2 = y;
+	lineArray.push(l);
 }
 //circle
 var cirArray = [];
 var circleRX = 0, circleRY = 0;
 function Cir() {
-  this.x = 0;
-  this.y = 0;
-  this.r = 10; 
+	this.x = 0;
+	this.y = 0;
+	this.r = 10; 
 }
 
 function addCir(x, y) {
-  var cir = new Cir;
-  cir.x = x;
-  cir.y = y;
-  cirArray.push(cir);
+	var cir = new Cir;
+	cir.x = x;
+	cir.y = y;
+	cirArray.push(cir);
 }
 
-var captureJpeg =function(){
-	var canvas = document.getElementById("sketchCanvas");
-	canvas.toBlob(function(blob) {			
-		socket.send(blob);
-	}, "image/jpeg", 1);
-}
+// var captureJpeg =function(){
+// 	console.log("captureJpeg");
+// 	var canvas = document.getElementById("sketchCanvas");
+// 	canvas.toBlob(function(blob) {			
+// 		socket.send(blob);
+// 	}, "image/jpeg", 1);
+// }
 
 $(window).load(function() {
 	socket = setupSocket();
@@ -87,16 +88,16 @@ $(window).load(function() {
 		$('html, body').on('touchstart touchmove', function(e){ 
 		     //prevent native touch activity like scrolling
 		     e.preventDefault(); 
-		});
+		 });
 		
 	} else {
 		alert("Sorry, your browser doesn't support canvas!");
 	}
 
 	$("#drawIcon").on("mouseup touchend", changeDraw);
-		$("#circleIcon").on("mouseup touchend", changeCir);
-		$("#triIcon").on("mouseup touchend", changeTri);
-		$("#okIcon").on("mouseup touchend", saveCanvas);
+	$("#circleIcon").on("mouseup touchend", changeCir);
+	$("#triIcon").on("mouseup touchend", changeTri);
+	$("#okIcon").on("mouseup touchend", saveCanvas);
 	//ledSpeed.onFinishChange(function(value) {
   		// Fires when a controller loses focus.
   		
@@ -116,7 +117,7 @@ $(window).load(function() {
  //  		alert("The new value is " + value);
 	// });
 
-	
+
 
 });
 
@@ -211,7 +212,7 @@ function onMouseDraw( x, y ){
 	console.log(x+"::"+y);
 
 	var point = {point:{x:x,y:y},id:id,color:color,sw:sw};
-		if ( socket.readyState == 1 ){
+	if ( socket.readyState == 1 ){
 			// sketches[id].points.push( point.point );
 
 			// if ( sketches[id].points.length > 500 ){
@@ -220,7 +221,7 @@ function onMouseDraw( x, y ){
 			//socket.send(JSON.stringify(point));
 			renderCanvas();
 		}
-}
+	}
 
 //save the start draw point
 function saveDrawSpt(x,y) {
@@ -286,7 +287,7 @@ function drawCircle() {
 
 	// for (var i=0;i<=10;i++) {
 	// 	onMouseDraw(x+Math.cos(Math.radians(i*36))*r, y+Math.sin(Math.radians(i*36))*r);
-		
+
 	// }
 	// ctx.beginPath();
 	// ctx.strokeStyle="#FF0000";
@@ -328,11 +329,11 @@ function eraseLast() {
 
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
-  return degrees * Math.PI / 180;
+	return degrees * Math.PI / 180;
 };
 // Converts from radians to degrees.
 Math.degrees = function(radians) {
-  return radians * 180 / Math.PI;
+	return radians * 180 / Math.PI;
 };
 
 // catch incoming messages + render them to the canvas
@@ -399,9 +400,15 @@ function setupSocket(){
 }
 
 function saveCanvas() {
+	console.log("saveCanvas");
 	var canvasG = document.getElementById("sketchCanvas");
 	//ctx.scale(0.5,0.5);
-	canvasG.toBlob(function(blob) {			
-		socket.send(blob);
-	}, "image/jpeg", 1);
+	if(canvasG.toBlob){
+		canvas.toBlob(
+          function (newBlob) {
+            socket.send(newBlob);
+          },
+          'image/jpeg'
+        )
+	}
 }
