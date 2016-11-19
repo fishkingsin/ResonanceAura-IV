@@ -16,14 +16,14 @@ void main()
 {
 	vec2 fragCoord = texCoordVarying;
 	vec2 uv = fragCoord.xy;
-	uv *= -scale*abs(sin(0.01 * iGlobalTime)+2); 
+	vec2 scale_uv = uv *(-scale*abs(sin(0.01 * iGlobalTime)+2)); 
 
 	float delta = sin(iGlobalTime*PI*0.04);
 	float delta2 = sin(iGlobalTime*PI*0.041);
 	float delta3 = sin(iGlobalTime*0.001);
 	float delta4 = sin(iGlobalTime*0.0011);
 
-	vec2 OVal = uv+vec2(((fragCoord.y>0.5)? delta : delta2), ((fragCoord.y>0.5)? delta3 : delta4));
+	vec2 OVal = scale_uv+vec2(((fragCoord.y>0.5)? delta : delta2), ((fragCoord.y>0.5)? delta3 : delta4));
 
 
 	fragColor = texture2D(tex0, OVal);
