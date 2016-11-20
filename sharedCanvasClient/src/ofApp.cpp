@@ -1,5 +1,6 @@
 #include "ofApp.h"
 //--------------------------------------------------------------
+int scales[4] = {1,2,4,8};
 void ofApp::setup(){
 #ifdef TARGET_OSX
     //    ofSetLogLevel(OF_LOG_VERBOSE);
@@ -59,7 +60,9 @@ void ofApp::setup(){
     _settings.maxFilter =				GL_LINEAR;
     
     
+    
     largeFbo.allocate(_settings);
+    
     //    fbo.getTexture().setTextureWrap(GL_REPEAT,GL_REPEAT);
     //    fbo.allocate(width,height,GL_RGB);
     fbo.allocate(ofGetWidth(),ofGetHeight(),GL_RGB);
@@ -183,6 +186,7 @@ void ofApp::update(){
     
     //draw incoming drawing
     largeFbo.begin();
+//    largeFbo.getTexture().getTextureData().bFlipTexture = true;
     ofClear(0,0,0);
     map<int, Drawing*>::iterator it = drawings.begin();
     
@@ -215,10 +219,10 @@ void ofApp::update(){
         //            texture.draw((i%4)*w,(i/4)*h,w,h);
         //        }
         ofPushMatrix();
-        scale += (targetScale - scale) * 0.05;
+
         
         ofTranslate(w, h);
-        ofScale(scale,scale,scale);
+        ofScale(0.9,0.9,0.9);
         ofTranslate(-w, -h);
         texture.draw(0,0,ofGetWidth(),ofGetHeight());
         ofPopMatrix();
@@ -232,11 +236,12 @@ void ofApp::update(){
     fbo.begin();
     ofClear(0,0,0);
     shader.begin();
+    scale += (targetScale - scale) * 0.05;
     //    shader.setUniformTexture("tex0", fbo.getTexture(0), 0);
     shader.setUniform3f("iResolution",ofGetWidth(), ofGetHeight(),0);
     shader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
     shader.setUniform1f("scale",scale);
-    largeFbo.draw(0,0,fbo.getWidth(),fbo.getHeight());
+    largeFbo.draw(fbo.getWidth(),0,-fbo.getWidth(),fbo.getHeight());
     shader.end();
     fbo.end();
     //draw small canvas drawing
@@ -268,7 +273,8 @@ void ofApp::update(){
         texture.loadData(incoming.getPixels().getData(), incoming.getWidth(), incoming.getHeight(), GL_RGB);
         needToLoad = false;
         locked = false;
-        targetScale = ofRandom(0.8,1.2);
+        targetScale = scales[(int)ofRandom(0,4)];
+//        targetScale = ofRandom(0.8,1.2);
     }
 }
 
@@ -445,7 +451,7 @@ void ofApp::onBroadcast( ofxLibwebsockets::Event& args ){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if(key == '1'){
-        targetScale = ofRandom(0.8,1.2);
+        targetScale = scales[(int)ofRandom(0,4)];
     }
 }
 

@@ -47,13 +47,6 @@ function addCir(x, y) {
 	cirArray.push(cir);
 }
 
-// var captureJpeg =function(){
-// 	console.log("captureJpeg");
-// 	var canvas = document.getElementById("sketchCanvas");
-// 	canvas.toBlob(function(blob) {			
-// 		socket.send(blob);
-// 	}, "image/jpeg", 1);
-// }
 
 $(window).load(function() {
 	socket = setupSocket();
@@ -74,7 +67,7 @@ $(window).load(function() {
 		canvas.addEventListener("touchmove", onMouseMoved, false);
 		ctx			= canvas.getContext('2d');
 		canvas.width  = window.innerWidth-150;
-		canvas.height = window.innerHeight;
+		canvas.height = canvas.width;
 		//get the screen resize offset
 		wOffset = Math.floor(canvas.width/360);
 		hOffset = Math.floor(canvas.height/144);
@@ -126,8 +119,8 @@ $(window).load(function() {
 function onresize(){
 	canvas 		= document.getElementById("sketchCanvas");
 	
-	canvas.width  = window.innerWidth;
-	canvas.height = window.innerHeight;
+	canvas.width  = window.innerWidth-150;
+	canvas.height = canvas.width;
 	wOffset = Math.floor(canvas.width/360);
 	hOffset = Math.floor(canvas.height/144);
 }
