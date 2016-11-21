@@ -22,8 +22,8 @@ void main()
   	// uv.y = uv.y * 2; 
 	
 
-	float delta = sin(iGlobalTime*PI*0.04);
-	float delta2 = sin(iGlobalTime*PI*0.041);
+	float delta = sin(iGlobalTime*PI*0.004);
+	float delta2 = cos(iGlobalTime*PI*0.0041);
 	float delta3 = 0.0;//sin(iGlobalTime*0.001);
 	float delta4 = 0.0;//sin(iGlobalTime*0.0011);
 
