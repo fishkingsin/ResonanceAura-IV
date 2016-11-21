@@ -72,7 +72,7 @@ public:
     ofPath maskPath;
     ofFbo maskFbo;
 #if defined(TARGET_OPENGLES)
-    ofShader shader;
+    ofxAutoReloadedShader shader;
 #else
     ofxAutoReloadedShader shader;
 #endif

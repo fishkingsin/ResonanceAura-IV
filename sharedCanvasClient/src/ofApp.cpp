@@ -93,14 +93,10 @@ void ofApp::setup(){
     
     
     //    fbo.getTexture().getTextureData().textureTarget = GL_TEXTURE_2D;
-#ifdef TARGET_OSX
-    
+
     incoming.load("sample.jpg");
     incoming.resize(64,64);
     texture.loadData(incoming.getPixels().getData(), incoming.getWidth(), incoming.getHeight(), GL_RGB);
-    
-    
-#endif
 #if defined(TARGET_LINUX_ARM)
     ofLogWarning() << "TARGET_OPENGLES ";
     shader.load("shadersES2/shader");
