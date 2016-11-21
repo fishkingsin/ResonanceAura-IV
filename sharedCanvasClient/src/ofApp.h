@@ -77,5 +77,5 @@ public:
     ofxAutoReloadedShader shader;
 #endif
     float targetScale,scale;
-    
+    float  prevTime;
 };

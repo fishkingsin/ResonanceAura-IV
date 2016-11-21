@@ -129,7 +129,7 @@ void ofApp::exit(){
 #else
     apa102.send(buf[0], length);
 #endif
-    
+    prevTime = ofGetElapsedTimef();
 }
 
 void ofApp::threadedFunction(){
@@ -239,7 +239,7 @@ void ofApp::update(){
     scale += (targetScale - scale) * 0.05;
     //    shader.setUniformTexture("tex0", fbo.getTexture(0), 0);
     shader.setUniform3f("iResolution",ofGetWidth(), ofGetHeight(),0);
-    shader.setUniform1f("iGlobalTime", ofGetElapsedTimef());
+    shader.setUniform1f("iGlobalTime", ofGetElapsedTimef()-prevTime);
     shader.setUniform1f("scale",scale);
     largeFbo.draw(fbo.getWidth(),0,-fbo.getWidth(),fbo.getHeight());
     shader.end();
@@ -274,6 +274,7 @@ void ofApp::update(){
         needToLoad = false;
         locked = false;
         targetScale = scales[(int)ofRandom(0,4)];
+        prevTime = ofGetElapsedTimef();
 //        targetScale = ofRandom(0.8,1.2);
     }
 }
@@ -452,6 +453,7 @@ void ofApp::onBroadcast( ofxLibwebsockets::Event& args ){
 void ofApp::keyPressed(int key){
     if(key == '1'){
         targetScale = scales[(int)ofRandom(0,4)];
+        prevTime = ofGetElapsedTimef();
     }
 }
 
