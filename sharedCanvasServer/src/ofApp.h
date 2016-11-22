@@ -5,7 +5,7 @@
 #include "ofxLibwebsockets.h"
 #include "ofxXmlSettings.h"
 #include "Drawing.h"
-
+#include "ofxTurboJpeg.h"
 #include "ofxGui.h"
 class ofApp : public ofBaseApp {
     
@@ -46,6 +46,7 @@ public:
     void onParaChanged(int &i);
     void onLineWidthParaChanged(int &i);
     vector<ofFile>jsonFiles;
+    ofxTurboJpeg turbo;
     
     void threadedFunction();
     void replayDrawing();

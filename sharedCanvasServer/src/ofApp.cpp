@@ -161,6 +161,11 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
                     connections[i]->sendBinary(args.data);
                 }
             }
+            ofBuffer buf;
+            buf.set(args.data.getData(), args.data.size());
+            ostringstream os;
+            os << ofGetTimestampString("%Y-%m-%d-%H-%M-%S-%i") << ".jpg";
+            ofBufferToFile(os.str(), buf, true);
             
         }
         else if ( !args.json.isNull() ){
