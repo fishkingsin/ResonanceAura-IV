@@ -14,44 +14,88 @@ var strokeW = 1;
 var mode = 1;
 var lastIndex = 0;
 var dMode = 1;
+var drawIndex = 0;
 //line
 var lineArray = [];
 function Line() {
-  this.x = 0;
-  this.y = 0;
-  this.x2 = 0;
-  this.y2 = 0; 
+	this.x = 0;
+	this.y = 0;
+	this.x2 = 0;
+	this.y2 = 0; 
 }
 
 function addLine(x, y) {
-  var l = new Line;
-  l.x = x;
-  l.y = y;
-  l.x2 = x;
-  l.y2 = y;
-  lineArray.push(l);
+	var l = new Line;
+	l.x = x;
+	l.y = y;
+	l.x2 = x;
+	l.y2 = y;
+	lineArray.push(l);
 }
 //circle
 var cirArray = [];
 var circleRX = 0, circleRY = 0;
 function Cir() {
-  this.x = 0;
-  this.y = 0;
-  this.r = 10; 
+	this.x = 0;
+	this.y = 0;
+	this.r = 10; 
 }
 
 function addCir(x, y) {
-  var cir = new Cir;
-  cir.x = x;
-  cir.y = y;
-  cirArray.push(cir);
+	var cir = new Cir;
+	cir.x = x;
+	cir.y = y;
+	cirArray.push(cir);
+}
+//triangle
+var triArray = [];
+function Tri() {
+	this.x = 0;
+	this.y = 0;
+	this.w = 10; 
+	this.h = 10;
+	this.a = 0;
 }
 
-var captureJpeg =function(){
-	var canvas = document.getElementById("sketchCanvas");
-	canvas.toBlob(function(blob) {			
-		socket.send(blob);
-	}, "image/jpeg", 1);
+function addTri(x, y) {
+	var tri = new Tri;
+	tri.x = x;
+	tri.y = y;
+	triArray.push(tri);
+}
+
+//rect
+var sqArray = [];
+function Sq() {
+	this.x = 0;
+	this.y = 0;
+	this.w = 10; 
+	this.h = 10;
+	this.a = 0;
+}
+
+function addSq(x, y) {
+	var sq = new Sq;
+	sq.x = x;
+	sq.y = y;
+	sqArray.push(sq);
+}
+
+//hex
+var hexArray = [];
+function Hex() {
+	this.x = 0;
+	this.y = 0;
+	this.w = 10; 
+	this.h = 10;
+	this.a = 0;
+}
+
+function addHex(x, y) {
+	var hex = new Hex;
+	hex.x = x;
+	hex.y = y;
+	hexArray.push(hex);
 }
 
 $(window).load(function() {
@@ -74,6 +118,8 @@ $(window).load(function() {
 		ctx			= canvas.getContext('2d');
 		canvas.width  = window.innerWidth-150;
 		canvas.height = window.innerHeight;
+		// canvas.width  = 450;
+		// canvas.height = 450;
 		//get the screen resize offset
 		wOffset = Math.floor(canvas.width/360);
 		hOffset = Math.floor(canvas.height/144);
@@ -87,16 +133,18 @@ $(window).load(function() {
 		$('html, body').on('touchstart touchmove', function(e){ 
 		     //prevent native touch activity like scrolling
 		     e.preventDefault(); 
-		});
+		 });
 		
 	} else {
 		alert("Sorry, your browser doesn't support canvas!");
 	}
 
 	$("#drawIcon").on("mouseup touchend", changeDraw);
-		$("#circleIcon").on("mouseup touchend", changeCir);
-		$("#triIcon").on("mouseup touchend", changeTri);
-		$("#okIcon").on("mouseup touchend", saveCanvas);
+	$("#circleIcon").on("mouseup touchend", changeCir);
+	$("#triIcon").on("mouseup touchend", changeTri);
+	$("#sqIcon").on("mouseup touchend", changeSq);
+	$("#hexIcon").on("mouseup touchend", changeHex);
+	$("#okIcon").on("mouseup touchend", saveCanvas);
 	//ledSpeed.onFinishChange(function(value) {
   		// Fires when a controller loses focus.
   		
@@ -116,7 +164,7 @@ $(window).load(function() {
  //  		alert("The new value is " + value);
 	// });
 
-	
+
 
 });
 
@@ -137,7 +185,11 @@ function sendMessageForm(){
 }
 
 function changeDraw(e) {
-	dMode = 0;
+	//dMode = 0;
+	cirArray=[];
+	hexArray=[];
+	sqArray=[];
+	triArray=[];
 }
 
 function changeCir(e) {
@@ -148,23 +200,40 @@ function changeTri(e) {
 	dMode = 2;
 }
 
+function changeSq(e) {
+	dMode = 3;
+}
+
+function changeHex(e) {
+	dMode = 4;
+}
+
 var bMouseDown = false;
 function onMouseDown( e ){
 	mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX);
 	mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY);
-	bMouseDown = true;
+	
 	
 	//get the new draw point
 	//
 	//
-	if(dMode == 0) {
-		// lastIndex = sketches[id].points.length+1;
-		// saveDrawSpt(mouseX, mouseY);
-		// onMouseDraw( mouseX, mouseY );
-		addLine(mouseX, mouseY);
-	} else if(dMode == 1) {
-		addCir(mouseX, mouseY);
-	}
+	//if(!bMouseDown) {
+		bMouseDown=true;
+		if(dMode == 0) {
+			
+			addLine(mouseX, mouseY);
+		} else if(dMode == 1) {
+
+			addCir(mouseX, mouseY);
+			drawIndex = cirArray.length-1;
+		} else if(dMode == 2) {
+			addTri(mouseX, mouseY);
+		}  else if(dMode == 3) {
+			addSq(mouseX, mouseY);
+		}  else if(dMode == 4) {
+			addHex(mouseX, mouseY);
+		}
+	//}
 	renderCanvas();
 	
 }
@@ -181,6 +250,23 @@ function onMouseMoved( e ){
 		} else if(dMode == 1) {
 			var index = cirArray.length-1;
 			cirArray[index].r = 10 + (Math.abs(mouseX-cirArray[index].x)>Math.abs(mouseY-cirArray[index].y)?Math.abs(mouseX-cirArray[index].x):Math.abs(mouseY-cirArray[index].y));
+			addCir(cirArray[drawIndex].x, cirArray[drawIndex].y);
+		} else if(dMode == 2) {
+			var index = triArray.length-1;
+			triArray[index].w = 10 + (Math.abs(mouseX-triArray[index].x)>Math.abs(mouseY-triArray[index].y)?Math.abs(mouseX-triArray[index].x):Math.abs(mouseY-triArray[index].y));
+			triArray[index].h = Math.sqrt(Math.pow(triArray[index].w,2)-Math.pow(triArray[index].w*.5, 2));
+			triArray[index].a = Math.atan2(mouseY-triArray[index].y, mouseX-triArray[index].x);
+			triArray[index].a = triArray[index].a*180/Math.PI+90;
+		}  else if(dMode == 3) {
+			var index = sqArray.length-1;
+			sqArray[index].w = 10 + (Math.abs(mouseX-sqArray[index].x)>Math.abs(mouseY-sqArray[index].y)?Math.abs(mouseX-sqArray[index].x):Math.abs(mouseY-sqArray[index].y));
+			sqArray[index].a = Math.atan2(mouseY-sqArray[index].y, mouseX-sqArray[index].x);
+			sqArray[index].a = sqArray[index].a*180/Math.PI+90;
+		}  else if(dMode == 4) {
+			var index = hexArray.length-1;
+			hexArray[index].w = 10 + (Math.abs(mouseX-hexArray[index].x)>Math.abs(mouseY-hexArray[index].y)?Math.abs(mouseX-hexArray[index].x):Math.abs(mouseY-hexArray[index].y));
+			hexArray[index].a = Math.atan2(mouseY-hexArray[index].y, mouseX-hexArray[index].x);
+			hexArray[index].a = hexArray[index].a*180/Math.PI+90;
 		}
 	}
 	renderCanvas();
@@ -193,11 +279,8 @@ function onMouseUp( e ){
 	//onMouseDraw(-1, -1);
 	if(dMode == 0) {
 	} else if(dMode == 1) {
-		
-	}
-	if(mouseX>800 && mouseY > 300) {
-		console.log("goooooooo");
-		saveCanvas();
+		var index = cirArray.length-1;
+		cirArray[index].r = 10 + (Math.abs(mouseX-cirArray[index].x)>Math.abs(mouseY-cirArray[index].y)?Math.abs(mouseX-cirArray[index].x):Math.abs(mouseY-cirArray[index].y));
 	}
 	//renderCanvas();
 }
@@ -205,22 +288,22 @@ function onMouseUp( e ){
 // catch mouse events on canvas
 function onMouseDraw( x, y ){
 	//rescale the point for server
-	x =Math.floor(x/wOffset);
-	y=Math.floor(y/hOffset);
-	var sw = parseInt(strokeW);
-	console.log(x+"::"+y);
+	// x =Math.floor(x/wOffset);
+	// y=Math.floor(y/hOffset);
+	// var sw = parseInt(strokeW);
+	// console.log(x+"::"+y);
 
-	var point = {point:{x:x,y:y},id:id,color:color,sw:sw};
-		if ( socket.readyState == 1 ){
-			// sketches[id].points.push( point.point );
+	// var point = {point:{x:x,y:y},id:id,color:color,sw:sw};
+	// if ( socket.readyState == 1 ){
+	// 		// sketches[id].points.push( point.point );
 
-			// if ( sketches[id].points.length > 500 ){
-			// 	//sketches[id].points.shift();
-			// }
-			//socket.send(JSON.stringify(point));
-			renderCanvas();
-		}
-}
+	// 		// if ( sketches[id].points.length > 500 ){
+	// 		// 	//sketches[id].points.shift();
+	// 		// }
+	// 		//socket.send(JSON.stringify(point));
+	// 		renderCanvas();
+	// 	}
+	}
 
 //save the start draw point
 function saveDrawSpt(x,y) {
@@ -242,40 +325,16 @@ function renderCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	drawLine();
 	drawCircle();
-	// canvas.width = canvas.width;
-	// ctx.moveTo(0,0);
-	// for ( var _id in sketches ){
-	// 	var c = sketches[_id].color;
-	// 	var pts = sketches[_id].points;
-	// 	ctx.lineWidth=strokeW;
-	// 	ctx.strokeStyle = 'rgb('+c.r+','+c.g+','+c.b+')';
-	// 	ctx.beginPath();
-	// 	if ( pts.length > 0 ){			
-	// 		//ctx.moveTo(pts[drawSPt].x*wOffset, pts[drawSPt].y*hOffset);
-	// 		//console.log(pts[drawSPt].x*wOffset+"::"+drawSPt);
-	// 		for ( var i=0, len = pts.length; i<len; i++){
-	// 			// if(pts[i].x<0) {
-	// 			// 	drawSPt = i+1;
-	// 			// 	break;
-	// 			// }
-	// 			if(pts[i].x<0) {
-	// 				ctx.moveTo(-pts[i].x*wOffset, -pts[i].y*hOffset);
-	// 			} else {
-	// 				ctx.lineTo( pts[i].x*wOffset, pts[i].y*hOffset );
-	// 			}
-
-	// 		}
-	// 		ctx.stroke();
-	// 	}
-
-	// }
+	drawTri();
+	drawSq();
+	drawHex();
 }
 
 function drawLine() {
 	for(var i=0;i<lineArray.length;i++) {
 		ctx.beginPath();
 		ctx.strokeStyle="#FFFFFF";
-		ctx.lineWidth=6;
+		ctx.lineWidth=8;
 		ctx.moveTo(lineArray[i].x,lineArray[i].y);
 		ctx.lineTo(lineArray[i].x2, lineArray[i].y2);
 		ctx.stroke();
@@ -286,7 +345,7 @@ function drawCircle() {
 
 	// for (var i=0;i<=10;i++) {
 	// 	onMouseDraw(x+Math.cos(Math.radians(i*36))*r, y+Math.sin(Math.radians(i*36))*r);
-		
+
 	// }
 	// ctx.beginPath();
 	// ctx.strokeStyle="#FF0000";
@@ -295,14 +354,63 @@ function drawCircle() {
 	for(var i=0;i<cirArray.length;i++) {
 		ctx.beginPath();
 		ctx.strokeStyle="#FFFFFF";
-		ctx.lineWidth=1;
+		ctx.lineWidth=8;
 		ctx.arc(cirArray[i].x, cirArray[i].y,cirArray[i].r, 0, 2*Math.PI);
 		ctx.stroke();
 	}
 }
 
-function drawRect() {
+function drawTri() {
+	for(var i=0;i<triArray.length;i++) {
+		var obj = triArray[i];
+		ctx.save();
+		ctx.beginPath();
+		ctx.strokeStyle="#FFFFFF";
+		ctx.lineWidth=8;
+		ctx.translate(obj.x, obj.y);
+		ctx.rotate(obj.a*Math.PI/180);
+		ctx.moveTo(-obj.w*.5, obj.h*.5);
+		ctx.lineTo(obj.w*.5, obj.h*.5);
+		ctx.lineTo(0, -obj.h*.5);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.restore();
+	}
+}
 
+function drawSq() {
+	for(var i=0;i<sqArray.length;i++) {
+		var obj = sqArray[i];
+		ctx.save();
+		ctx.beginPath();
+		ctx.strokeStyle="#FFFFFF";
+		ctx.lineWidth=8;
+		ctx.translate(obj.x, obj.y);
+		ctx.rotate(obj.a*Math.PI/180);
+		ctx.strokeRect(-obj.w*.5, -obj.w*.5, obj.w, obj.w);
+		ctx.stroke();
+		ctx.restore();
+	}
+}
+
+function drawHex() {
+	for(var i=0;i<hexArray.length;i++) {
+		var obj = hexArray[i];
+		ctx.save();
+		ctx.beginPath();
+		ctx.strokeStyle="#FFFFFF";
+		ctx.lineWidth=8;
+		ctx.translate(obj.x, obj.y);
+		ctx.rotate(obj.a*Math.PI/180);
+		ctx.moveTo(obj.w*.5,0);
+		for(var j=0;j<6;j++) {
+			var a = (j+1)*60*Math.PI/180;
+			ctx.lineTo(obj.w*.5*Math.cos(a),obj.w*.5*Math.sin(a));
+		}
+		ctx.closePath();
+		ctx.stroke();
+		ctx.restore();
+	}
 }
 
 function eraseAll() {
@@ -328,11 +436,11 @@ function eraseLast() {
 
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
-  return degrees * Math.PI / 180;
+	return degrees * Math.PI / 180;
 };
 // Converts from radians to degrees.
 Math.degrees = function(radians) {
-  return radians * 180 / Math.PI;
+	return radians * 180 / Math.PI;
 };
 
 // catch incoming messages + render them to the canvas
@@ -356,7 +464,7 @@ function setupSocket(){
 
 		// received message
 		_socket.onmessage =function got_packet(msg) {
-			//console.log(msg.data);
+			console.log(msg);
 			var message = JSON.parse(msg.data);
 
 			if ( message.setup ){
@@ -379,6 +487,7 @@ function setupSocket(){
 					//sketches[_id].points.shift();
 				}
 			} else if ( message.erase ){
+
 				var _id = message.erase;
 				if ( sketches[_id] ){
 					delete sketches[_id];
@@ -399,9 +508,15 @@ function setupSocket(){
 }
 
 function saveCanvas() {
+	// console.log("saveCanvas");
 	var canvasG = document.getElementById("sketchCanvas");
 	//ctx.scale(0.5,0.5);
-	canvasG.toBlob(function(blob) {			
-		socket.send(blob);
-	}, "image/jpeg", 1);
+	if(canvasG.toBlob){
+		canvasG.toBlob(
+          function (newBlob) {
+            socket.send(newBlob);
+          },
+          'image/jpeg'
+        )
+	}
 }

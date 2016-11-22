@@ -1,42 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset=utf-8 />
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<title>IFVA</title>
+ 	<meta charset=utf-8 />
+ 	<meta name="apple-mobile-web-app-capable" content="yes">
+ 	<title>IFVA</title>
 	<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8" />
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
-	<script type="text/javascript" src="js/libs/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
-	<script type="text/javascript" src="js/build/dat.gui.min.js"></script>
-	<script type="text/javascript" src="js/canvas-to-blob.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
-
+    <script type="text/javascript" src="js/libs/jquery-1.7.1.min.js"></script>
+ 	<script type="text/javascript" src="js/utils.js"></script>
+ 	<script type="text/javascript" src="js/build/dat.gui.min.js"></script>
+ 	<script type="text/javascript" src="js/canvas-to-blob.js"></script>
+ 	<script type="text/javascript" src="js/main.js"></script>
+ 	
 </head>
 
 <body>
-	<!-- <div >
-		<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-			<defs>
-				<pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-					<path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5"/>
-				</pattern>
-				<pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-					<rect width="80" height="80" fill="url(#smallGrid)"/>
-					<path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
-				</pattern>
-			</defs>
+	<!-- <div id="container"> -->
+		<!-- <h2>ofxLibwebsockets test applet</h2><hr />
+		<div>
+			<h3>Browser info</h3><hr />
+			<div class="info">
+				<strong>Detected Browser: <div id="brow">...</div></strong><br />
+				<div id="status">Not initialized</div><br />
+			</div>
+		</div>
+		<div>
+			<h3>Canvas</h3>
+			<hr /> -->
+			<canvas id="sketchCanvas" style="image-rendering: pixelated"/></canvas>
+		<!-- </div> -->
 
-			<rect width="100%" height="100%" fill="url(#grid)" />
-		</svg>
-	</div> -->
-	<div style="margin-top: -25px; position: absolute;  z-index: 3;">
-		
-		<canvas id="sketchCanvas" style="image-rendering: pixelated"/></canvas>
-	</div>
-	<img id="drawIcon" src="images/draw.png" width="150" height="150" />
-	<img id="circleIcon" src="images/circle.png" width="150" height="150" />
-	<img id="triIcon" src="images/tri.png" width="150" height="150" />
-	<img id="okIcon" src="images/ok.png" width="150" height="150" />
+	<!-- </div> -->
+	<img class="btn"  id="drawIcon" src="images/draw.png"/>
+	<img class="btn"  id="circleIcon" src="images/circle.png"/>
+	<img class="btn"  id="triIcon" src="images/tri.png"/>
+	<img class="btn"  id="sqIcon" src="images/sq.png"/>
+	<img class="btn"  id="hexIcon" src="images/hex.png"/>
+	<img class="btn"  id="okIcon" src="images/ok.png"/>
 </body>
 </html>
