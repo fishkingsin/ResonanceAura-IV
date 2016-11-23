@@ -198,7 +198,7 @@ void ofApp::onIdle( ofxLibwebsockets::Event& args ){
 
 //--------------------------------------------------------------
 void ofApp::onMessage( ofxLibwebsockets::Event& args ){
-    cout<<"got message "<<args.message<<endl;
+    
     
     try{
         // trace out string messages or JSON messages!
@@ -218,29 +218,31 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
             
         }
         else if ( !args.json.isNull() ){
-            if(args.json["erase"].isNull()) {
-                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
-                
-                // for some reason these come across as strings via JSON.stringify!
-                int r = ofToInt(args.json["color"]["r"].asString());
-                int g = ofToInt(args.json["color"]["g"].asString());
-                int b = ofToInt(args.json["color"]["b"].asString());
-                ofColor color = ofColor( r, g, b );
-                
-                int _id = ofToInt(args.json["id"].asString());
-                
-                map<int, Drawing*>::const_iterator it = drawings.find(_id);
-                Drawing * d = it->second;
-                if(d!=NULL){
-                    d->addPoint(point);
-                }
-            } else {
-                if(args.json["erase"]!=-1) {
-                    drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
-                } else {
-                    drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
-                }
-            }
+            cout<<"got message ignore"<<args.message<<endl;
+            
+//            if(args.json["erase"].isNull()) {
+//                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
+//                
+//                // for some reason these come across as strings via JSON.stringify!
+//                int r = ofToInt(args.json["color"]["r"].asString());
+//                int g = ofToInt(args.json["color"]["g"].asString());
+//                int b = ofToInt(args.json["color"]["b"].asString());
+//                ofColor color = ofColor( r, g, b );
+//                
+//                int _id = ofToInt(args.json["id"].asString());
+//                
+//                map<int, Drawing*>::const_iterator it = drawings.find(_id);
+//                Drawing * d = it->second;
+//                if(d!=NULL){
+//                    d->addPoint(point);
+//                }
+//            } else {
+//                if(args.json["erase"]!=-1) {
+//                    drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
+//                } else {
+//                    drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
+//                }
+//            }
         } else {
         }
         // send all that drawing back to everybody except this one
