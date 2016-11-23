@@ -1,3 +1,4 @@
 ofxGui
 ofxLibwebsockets
+ofxTurboJpeg
 ofxXmlSettings

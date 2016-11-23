@@ -5,7 +5,7 @@
 #include "ofxLibwebsockets.h"
 #include "ofxXmlSettings.h"
 #include "Drawing.h"
-
+#include "ofxTurboJpeg.h"
 #include "ofxGui.h"
 class ofApp : public ofBaseApp {
     
@@ -95,6 +95,15 @@ public:
         }
     };
     vector<ReplayThread*>replayThreads ;
+    
+    ofImage incoming;
+    bool needToLoad, locked;
+    ofBuffer buff;
+    string  toLoad;
+    bool    bSendImage;
+    ofImage currentImage;
+    ofxTurboJpeg turbo;
+    
     
 };
 

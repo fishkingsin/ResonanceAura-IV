@@ -37,9 +37,8 @@ void ofApp::setup(){
     lineWidth.set("lineWidth", 1,1,10);
     panel.add(lineWidth);
     lineWidth.addListener(this, &ofApp::onLineWidthParaChanged);
-    
-    incoming.load("10.jpg");
-    incoming.resize(64,64);
+    bSendImage = false;
+    locked = needToLoad = false;
 }
 void ofApp::onParaChanged(int &i){
     server.send("{\"delay\":" + ofToString( i ) + "}" );
@@ -59,6 +58,39 @@ void ofApp::update(){
         }
         toDelete.clear();
     }
+    
+    if ( bSendImage && toLoad != "" ){
+        turbo.load( toLoad, currentImage );
+        unsigned long size;
+        ofBuffer buffer;
+        //        unsigned char * compressed = turbo.compress(currentImage,100,&size);
+        turbo.compress(currentImage, 100, buffer);
+        //        server.sendBinary(buffer.getData(), size);
+        vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
+        for ( int i=0; i<connections.size(); i++){
+            
+            connections[i]->sendBinary(buffer);
+            
+        }
+        //        free(compressed);
+        
+        bSendImage = false;
+        toLoad = "";
+    }
+    
+    if ( needToLoad ){
+        // you can write this directly to a file!
+        //        ofFile test;
+        //        test.open("data.jpg", ofFile::WriteOnly);
+        //        test.writeFromBuffer(buff);
+        //        test.close();
+        
+        turbo.load(buff, incoming);
+        needToLoad = false;
+        locked = false;
+        
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -71,7 +103,21 @@ void ofApp::draw(){
     } else {
         ofDrawBitmapString("WebSocket setup failed :(", 20,20);
     }
+    if (currentImage.isAllocated()){
+        // draw loaded image either at scale or 1/2 the size of window
+        // (whichever is smaller)
+        float scale = currentImage.getHeight() > ofGetHeight()/2.0 ? (float) ofGetHeight()/2.0/currentImage.getHeight() : 1.0;
+        ofSetColor(255);
+        currentImage.draw(0,0, currentImage.getWidth() * scale, currentImage.getHeight() * scale);
+    }
     
+    // image loaded from incoming binary
+    if ( incoming.isAllocated() ){
+        // draw image from mobile device either at scale or 1/2 the size of window
+        // (whichever is smaller)
+        float scale = incoming.getHeight() > ofGetHeight()/2.0 ? (float) ofGetHeight()/2.0/incoming.getHeight() : 1.0;
+        incoming.draw(0,ofGetHeight()/2.0, incoming.getWidth() * scale, incoming.getHeight() * scale);
+    }
     map<int, Drawing*>::iterator it = drawings.begin();
     
     ofNoFill();
@@ -153,7 +199,7 @@ void ofApp::onIdle( ofxLibwebsockets::Event& args ){
 
 //--------------------------------------------------------------
 void ofApp::onMessage( ofxLibwebsockets::Event& args ){
-    cout<<"got message "<<args.message<<endl;
+    
     
     try{
         // trace out string messages or JSON messages!
@@ -170,54 +216,43 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
                 largeImg.append(args.data.getData(),args.data.size());
                 cout<<largeImg.size()<<endl;
             }
+            ofBuffer buf;
+            buf.set(args.data.getData(), args.data.size());
+            ostringstream os;
+            os << ofGetTimestampString("%Y-%m-%d-%H-%M-%S-%i") << ".jpg";
+            ofBufferToFile(os.str(), buf, true);
             
         }
         else if ( !args.json.isNull() ){
-            if (!args.json["start"].isNull()){
-                largeFile = true;
-                largeImg.clear();
-            } else if(!args.json["end"].isNull()) {
-                largeFile = false;
-                largeImg.end();
-                vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
-                for ( int i=0; i<connections.size(); i++){
-                    if ( (*connections[i]) != args.conn ){
-                        connections[i]->sendBinary(largeImg);
-                    }
-                }
-            }else if(!args.json["iii"].isNull()) {
-                ofBuffer ofb;
-//                args.json["iii"];
-//                vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
-//                for ( int i=0; i<connections.size(); i++){
-//                    if ( (*connections[i]) != args.conn ){
-//                        connections[i]->sendBinary(args.data);
-//                    }
-//                }
+            
+            cout<<"got message ignore"<<args.message<<endl;
+            if(!args.json["id"].isNull()){
+                toLoad = ofToDataPath("web/"+args.json["id"].asString()+".jpg",true);
+                bSendImage = true;
             }
-//            if(args.json["erase"].isNull()) {
-//                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
-//                
-//                // for some reason these come across as strings via JSON.stringify!
-//                int r = ofToInt(args.json["color"]["r"].asString());
-//                int g = ofToInt(args.json["color"]["g"].asString());
-//                int b = ofToInt(args.json["color"]["b"].asString());
-//                ofColor color = ofColor( r, g, b );
-//                
-//                int _id = ofToInt(args.json["id"].asString());
-//                
-//                map<int, Drawing*>::const_iterator it = drawings.find(_id);
-//                Drawing * d = it->second;
-//                if(d!=NULL){
-//                    d->addPoint(point);
-//                }
-//            } else {
-//                if(args.json["erase"]!=-1) {
-//                    drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
-//                } else {
-//                    drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
-//                }
-//            }
+            //            if(args.json["erase"].isNull()) {
+            //                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
+            //
+            //                // for some reason these come across as strings via JSON.stringify!
+            //                int r = ofToInt(args.json["color"]["r"].asString());
+            //                int g = ofToInt(args.json["color"]["g"].asString());
+            //                int b = ofToInt(args.json["color"]["b"].asString());
+            //                ofColor color = ofColor( r, g, b );
+            //
+            //                int _id = ofToInt(args.json["id"].asString());
+            //
+            //                map<int, Drawing*>::const_iterator it = drawings.find(_id);
+            //                Drawing * d = it->second;
+            //                if(d!=NULL){
+            //                    d->addPoint(point);
+            //                }
+            //            } else {
+            //                if(args.json["erase"]!=-1) {
+            //                    drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
+            //                } else {
+            //                    drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
+            //                }
+            //            }
         } else {
         }
         // send all that drawing back to everybody except this one
@@ -404,5 +439,15 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
-    
+    for (int i=0; i<dragInfo.files.size(); i++){
+        string file = dragInfo.files[i];
+        ofFile f(file);
+        string ex = f.getExtension();
+        std::transform(ex.begin(), ex.end(),ex.begin(), ::toupper);
+        
+        if ( ex == "JPG" || ex == "JPEG" || ex == "PNG" || ex == "GIF" ){
+            toLoad = file;
+            bSendImage = true;
+        }
+    }
 }
