@@ -151,7 +151,7 @@ $(window).load(function() {
 	$("#triIcon").on("mouseup touchend", changeTri);
 	$("#sqIcon").on("mouseup touchend", changeSq);
 	$("#hexIcon").on("mouseup touchend", changeHex);
-	$("#okIcon").on("mouseup touchend", saveCanvas);
+	$("#okIcon").on("mouseup touchend", saveImg);
 });
 
 var BASE64_MARKER = ';base64,';
@@ -174,53 +174,53 @@ function saveImg(e) {
 	var dataURL = canvas.toDataURL('image/jpeg');
 	var binStr = convertDataURIToBinary(dataURL);
 	 console.log(binStr);
-	if(binStr.length > 50000) {
-		// var jjj = {iii:binStr};
-		//   socket.send(JSON.stringify(jjj));
-		var startB = {start:binStr.length};
-		var endB = {end:1};
-		var split = Math.floor(binStr.length*.5);
-		var array = new Uint8Array(new ArrayBuffer(split));
-		var array2 = new Uint8Array(new ArrayBuffer(split+1));
-		socket.send(JSON.stringify(startB));
-		for(var i = 0; i < split; i++) {
-		 	    array[i] = binStr[i];
-		 	}
-		 	socket.send(array);
-		//  	for(var i = split; i < split*2; i++) {
-		//  	    array2[i] = binStr[i];
-		//  	}
-		//  	socket.send(array2);
-		//  socket.send(JSON.stringify(endB));
-		// var startB = {start:binStr.length};
-		// var endB = {end:1};
-		// socket.send(JSON.stringify(startB));
-		// var binLength = Math.floor(binStr.length/50000);
-		// console.log(binLength);
-		// for(var counter=0;counter<binLength;counter++) {
-		//  	var array = new Uint8Array(new ArrayBuffer(500000));
-		//  	var start = counter*500000;
-		//  	var end = (counter+1)*500000;
-		//  	for(var i = 0; i < binStr.length; i++) {
-		//  	    array[i] = binStr[i];
-		//  	}
-		//  	socket.send(array);
-		//  	console.log(counter);
-		// }
-		// var leftLength = binStr.length%50000;
-		// console.log(leftLength);
-		// var leftArray = new Uint8Array(new ArrayBuffer(leftLength));
-		// for(var ii=binLength*50000;ii<binLength*50000+leftLength;ii++) {
-		// 	leftArray[ii] = binStr[ii];
-		// }
-		// socket.send(leftArray);
-		// socket.send(JSON.stringify(endB));
-		//socket.send(binStr);
-	} else {
-	 	socket.send(binStr);
+	// if(binStr.length > 50000) {
+	// 	// var jjj = {iii:binStr};
+	// 	//   socket.send(JSON.stringify(jjj));
+	// 	var startB = {start:binStr.length};
+	// 	var endB = {end:1};
+	// 	var split = Math.floor(binStr.length*.5);
+	// 	var array = new Uint8Array(new ArrayBuffer(split));
+	// 	var array2 = new Uint8Array(new ArrayBuffer(split+1));
+	// 	socket.send(JSON.stringify(startB));
+	// 	for(var i = 0; i < split; i++) {
+	// 	 	    array[i] = binStr[i];
+	// 	 	}
+	// 	 	socket.send(array);
+	// 	//  	for(var i = split; i < split*2; i++) {
+	// 	//  	    array2[i] = binStr[i];
+	// 	//  	}
+	// 	//  	socket.send(array2);
+	// 	//  socket.send(JSON.stringify(endB));
+	// 	// var startB = {start:binStr.length};
+	// 	// var endB = {end:1};
+	// 	// socket.send(JSON.stringify(startB));
+	// 	// var binLength = Math.floor(binStr.length/50000);
+	// 	// console.log(binLength);
+	// 	// for(var counter=0;counter<binLength;counter++) {
+	// 	//  	var array = new Uint8Array(new ArrayBuffer(500000));
+	// 	//  	var start = counter*500000;
+	// 	//  	var end = (counter+1)*500000;
+	// 	//  	for(var i = 0; i < binStr.length; i++) {
+	// 	//  	    array[i] = binStr[i];
+	// 	//  	}
+	// 	//  	socket.send(array);
+	// 	//  	console.log(counter);
+	// 	// }
+	// 	// var leftLength = binStr.length%50000;
+	// 	// console.log(leftLength);
+	// 	// var leftArray = new Uint8Array(new ArrayBuffer(leftLength));
+	// 	// for(var ii=binLength*50000;ii<binLength*50000+leftLength;ii++) {
+	// 	// 	leftArray[ii] = binStr[ii];
+	// 	// }
+	// 	// socket.send(leftArray);
+	// 	// socket.send(JSON.stringify(endB));
+	// 	//socket.send(binStr);
+	// } else {
+	 	//socket.send(binStr);
 	 	//var jjj = {iii:binStr};
 		 // socket.send(JSON.stringify(jjj));
-	}
+	//}
 	// $.post('/send.php',
  //    {
  //        id : imgId,
@@ -240,8 +240,8 @@ function saveImg(e) {
     }, function(data) {
        //console.log(data);
        if(data=="success") {
-       	//var d = {id:imgId};
-       	//socket.send(canvas.toDataURL("image/jpeg"));
+       	var d = {id:imgId};
+       	socket.send(JSON.stringify(d));
        }
     });
 }
