@@ -64,7 +64,13 @@ void ofApp::update(){
         ofBuffer buffer;
         //        unsigned char * compressed = turbo.compress(currentImage,100,&size);
         turbo.compress(currentImage, 100, buffer);
-        server.sendBinary(buffer.getData(), size);
+//        server.sendBinary(buffer.getData(), size);
+        vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
+        for ( int i=0; i<connections.size(); i++){
+            
+                connections[i]->sendBinary(buffer);
+            
+        }
         //        free(compressed);
         
         bSendImage = false;
