@@ -46,7 +46,6 @@ public:
     void onParaChanged(int &i);
     void onLineWidthParaChanged(int &i);
     vector<ofFile>jsonFiles;
-    ofxTurboJpeg turbo;
     
     void threadedFunction();
     void replayDrawing();
@@ -95,6 +94,15 @@ public:
         }
     };
     vector<ReplayThread*>replayThreads ;
+    
+    ofImage incoming;
+    bool needToLoad, locked;
+    ofBuffer buff;
+    string  toLoad;
+    bool    bSendImage;
+    ofImage currentImage;
+    ofxTurboJpeg turbo;
+    
     
 };
 

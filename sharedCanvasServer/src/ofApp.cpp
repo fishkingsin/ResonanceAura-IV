@@ -36,6 +36,8 @@ void ofApp::setup(){
     lineWidth.set("lineWidth", 1,1,10);
     panel.add(lineWidth);
     lineWidth.addListener(this, &ofApp::onLineWidthParaChanged);
+    bSendImage = false;
+    locked = needToLoad = false;
 }
 void ofApp::onParaChanged(int &i){
     server.send("{\"delay\":" + ofToString( i ) + "}" );
@@ -55,6 +57,33 @@ void ofApp::update(){
         }
         toDelete.clear();
     }
+    
+    if ( bSendImage && toLoad != "" ){
+        turbo.load( toLoad, currentImage );
+        unsigned long size;
+        ofBuffer buffer;
+        //        unsigned char * compressed = turbo.compress(currentImage,100,&size);
+        turbo.compress(currentImage, 100, buffer);
+        server.sendBinary(buffer.getData(), size);
+        //        free(compressed);
+        
+        bSendImage = false;
+        toLoad = "";
+    }
+    
+    if ( needToLoad ){
+        // you can write this directly to a file!
+        //        ofFile test;
+        //        test.open("data.jpg", ofFile::WriteOnly);
+        //        test.writeFromBuffer(buff);
+        //        test.close();
+        
+        turbo.load(buff, incoming);
+        needToLoad = false;
+        locked = false;
+        
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -67,7 +96,21 @@ void ofApp::draw(){
     } else {
         ofDrawBitmapString("WebSocket setup failed :(", 20,20);
     }
+    if (currentImage.isAllocated()){
+        // draw loaded image either at scale or 1/2 the size of window
+        // (whichever is smaller)
+        float scale = currentImage.getHeight() > ofGetHeight()/2.0 ? (float) ofGetHeight()/2.0/currentImage.getHeight() : 1.0;
+        ofSetColor(255);
+        currentImage.draw(0,0, currentImage.getWidth() * scale, currentImage.getHeight() * scale);
+    }
     
+    // image loaded from incoming binary
+    if ( incoming.isAllocated() ){
+        // draw image from mobile device either at scale or 1/2 the size of window
+        // (whichever is smaller)
+        float scale = incoming.getHeight() > ofGetHeight()/2.0 ? (float) ofGetHeight()/2.0/incoming.getHeight() : 1.0;
+        incoming.draw(0,ofGetHeight()/2.0, incoming.getWidth() * scale, incoming.getHeight() * scale);
+    }
     map<int, Drawing*>::iterator it = drawings.begin();
     
     ofNoFill();
@@ -378,5 +421,15 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
-    
+    for (int i=0; i<dragInfo.files.size(); i++){
+        string file = dragInfo.files[i];
+        ofFile f(file);
+        string ex = f.getExtension();
+        std::transform(ex.begin(), ex.end(),ex.begin(), ::toupper);
+        
+        if ( ex == "JPG" || ex == "JPEG" || ex == "PNG" || ex == "GIF" ){
+            toLoad = file;
+            bSendImage = true;
+        }
+    }
 }
