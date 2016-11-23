@@ -102,7 +102,8 @@ public:
     bool    bSendImage;
     ofImage currentImage;
     ofxTurboJpeg turbo;
-    
+    string defaultPath;
+    ofPoint resizeDimension;
     
 };
 
