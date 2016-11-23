@@ -219,7 +219,10 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
         }
         else if ( !args.json.isNull() ){
             cout<<"got message ignore"<<args.message<<endl;
-            
+            if(!args.json["id"].isNull()){
+                toLoad = ofToDataPath("web/"+args.json["id"].asString()+".jpg",true);
+                bSendImage = true;
+            }
 //            if(args.json["erase"].isNull()) {
 //                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
 //                
