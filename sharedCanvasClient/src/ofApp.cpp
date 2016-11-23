@@ -21,6 +21,7 @@ void ofApp::setup(){
         
         if(numPtTags > 0){
             string server = settings.getValue("SETTINGS:SERVER","localhost");
+//            string server = "localhost";
             int port = settings.getValue("SETTINGS:PORT",9092);
             ofLogVerbose() << "loaded settings server "<<server;
             options.host = server;
@@ -357,7 +358,7 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
     try{
         cout<<"got message "<<args.message<<endl;
         // trace out string messages or JSON messages!
-        if ( args.isBinary ){
+        if ( args.isBinary){
             if ( locked ) return;
             buff.clear();
             buff.set(args.data.getData(), args.data.size());
@@ -387,15 +388,6 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
                     cout << "lineWidth:" << args.json["lineWidth"].asInt() << endl;
                     lineWidth = args.json["lineWidth"].asInt();
                 }
-                //                else if(!args.json["erase"].isNull()){
-                //                    cout << "erase:" << args.json["erase"].asInt() << endl;
-                //                    drawings.erase(args.json["erase"].asInt());
-                //                    if(args.json["erase"]!=-1) {
-                //                        drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
-                //                    } else {
-                //                        drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
-                //                    }
-                //                }
                 else if (args.json["id"].asInt() != id){
                     cout << "received point" << endl;
                     
@@ -431,7 +423,7 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
                     }
                 }
             }else {
-                
+
             }
         }
     }

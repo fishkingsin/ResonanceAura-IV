@@ -1,5 +1,6 @@
 #include "ofApp.h"
-
+bool largeFile = false;
+ofBuffer largeImg;
 //--------------------------------------------------------------
 void ofApp::setup(){
     // setup a server with default options on port 9092
@@ -36,6 +37,9 @@ void ofApp::setup(){
     lineWidth.set("lineWidth", 1,1,10);
     panel.add(lineWidth);
     lineWidth.addListener(this, &ofApp::onLineWidthParaChanged);
+    
+    incoming.load("10.jpg");
+    incoming.resize(64,64);
 }
 void ofApp::onParaChanged(int &i){
     server.send("{\"delay\":" + ofToString( i ) + "}" );
@@ -155,38 +159,65 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
         // trace out string messages or JSON messages!
         if(args.isBinary){
             cout<< "isBinary "<<endl;
-            vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
-            for ( int i=0; i<connections.size(); i++){
-                if ( (*connections[i]) != args.conn ){
-                    connections[i]->sendBinary(args.data);
+            if(!largeFile) {
+                vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
+                for ( int i=0; i<connections.size(); i++){
+                    if ( (*connections[i]) != args.conn ){
+                        connections[i]->sendBinary(args.data);
+                    }
                 }
+            } else {
+                largeImg.append(args.data.getData(),args.data.size());
+                cout<<largeImg.size()<<endl;
             }
             
         }
         else if ( !args.json.isNull() ){
-            if(args.json["erase"].isNull()) {
-                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
-                
-                // for some reason these come across as strings via JSON.stringify!
-                int r = ofToInt(args.json["color"]["r"].asString());
-                int g = ofToInt(args.json["color"]["g"].asString());
-                int b = ofToInt(args.json["color"]["b"].asString());
-                ofColor color = ofColor( r, g, b );
-                
-                int _id = ofToInt(args.json["id"].asString());
-                
-                map<int, Drawing*>::const_iterator it = drawings.find(_id);
-                Drawing * d = it->second;
-                if(d!=NULL){
-                    d->addPoint(point);
+            if (!args.json["start"].isNull()){
+                largeFile = true;
+                largeImg.clear();
+            } else if(!args.json["end"].isNull()) {
+                largeFile = false;
+                largeImg.end();
+                vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
+                for ( int i=0; i<connections.size(); i++){
+                    if ( (*connections[i]) != args.conn ){
+                        connections[i]->sendBinary(largeImg);
+                    }
                 }
-            } else {
-                if(args.json["erase"]!=-1) {
-                    drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
-                } else {
-                    drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
-                }
+            }else if(!args.json["iii"].isNull()) {
+                ofBuffer ofb;
+//                args.json["iii"];
+//                vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
+//                for ( int i=0; i<connections.size(); i++){
+//                    if ( (*connections[i]) != args.conn ){
+//                        connections[i]->sendBinary(args.data);
+//                    }
+//                }
             }
+//            if(args.json["erase"].isNull()) {
+//                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
+//                
+//                // for some reason these come across as strings via JSON.stringify!
+//                int r = ofToInt(args.json["color"]["r"].asString());
+//                int g = ofToInt(args.json["color"]["g"].asString());
+//                int b = ofToInt(args.json["color"]["b"].asString());
+//                ofColor color = ofColor( r, g, b );
+//                
+//                int _id = ofToInt(args.json["id"].asString());
+//                
+//                map<int, Drawing*>::const_iterator it = drawings.find(_id);
+//                Drawing * d = it->second;
+//                if(d!=NULL){
+//                    d->addPoint(point);
+//                }
+//            } else {
+//                if(args.json["erase"]!=-1) {
+//                    drawings.find(ofToInt(args.json["id"].asString()))->second->eraseLast();
+//                } else {
+//                    drawings.find(ofToInt(args.json["id"].asString()))->second->erase();
+//                }
+//            }
         } else {
         }
         // send all that drawing back to everybody except this one

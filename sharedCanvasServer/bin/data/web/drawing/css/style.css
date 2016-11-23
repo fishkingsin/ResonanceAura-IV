@@ -36,30 +36,17 @@ body {
     background-color: black;
 }
 
-#drawIcon {
+img.btn {
 	display: block;
 	position: absolute;
-	right:0;
-	top:0;
+	width: 100px;
+	height: 100px;
 }
+canvas {border: 1px solid white;}
 
-#circleIcon {
-	display: block;
-	position: absolute;
-	right:0;
-	top:150px;
-}
-
-#triIcon {
-	display: block;
-	position: absolute;
-	right:0;
-	top:300px;
-}
-
-#okIcon {
-	display: block;
-	position: absolute;
-	right:0;
-	top:450px;
-}
+#drawIcon { right:0; top:0; }
+#circleIcon { right:0; top:100px; }
+#triIcon { right:0; top:200px;}
+#sqIcon {right:0; top:300px;}
+#hexIcon {right:0; top:400px;}
+#okIcon { right:0; top:500px; }

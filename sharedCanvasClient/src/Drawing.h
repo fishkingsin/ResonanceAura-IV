@@ -18,7 +18,7 @@ public:
     
     void addPoint( ofPoint p ){
         if ( points.size() + 1 > 500 ){
-            points.erase( points.begin() );
+            //points.erase( points.begin() );
         }
         points.push_back( p );
     }

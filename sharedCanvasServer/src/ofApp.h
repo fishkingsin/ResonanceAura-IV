@@ -46,6 +46,7 @@ public:
     void onParaChanged(int &i);
     void onLineWidthParaChanged(int &i);
     vector<ofFile>jsonFiles;
+    ofImage incoming;
     
     void threadedFunction();
     void replayDrawing();
