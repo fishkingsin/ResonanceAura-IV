@@ -244,7 +244,7 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
             if(!args.json["id"].isNull()){
                 toLoad = defaultPath+"/"+args.json["id"].asString()+".jpg";
                 bSendImage = true;
-                webClient = args.conn.getClientIP();
+                webClientIP = args.conn.getClientIP();
             }
             //            if(args.json["erase"].isNull()) {
             //                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
