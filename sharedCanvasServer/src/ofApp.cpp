@@ -99,7 +99,9 @@ void ofApp::update(){
         locked = false;
         
     }
+#ifdef TARGET_OSX
     	ofSoundUpdate();
+#endif
     
 }
 
