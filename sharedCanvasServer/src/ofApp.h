@@ -104,6 +104,6 @@ public:
     ofxTurboJpeg turbo;
     string defaultPath;
     ofPoint resizeDimension;
-    
+    ofxLibwebsockets::Connection *webClient;
 };
 

@@ -72,8 +72,9 @@ void ofApp::update(){
         //        server.sendBinary(buffer.getData(), size);
         vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
         for ( int i=0; i<connections.size(); i++){
-            
-            connections[i]->sendBinary(buffer);
+            if(connections[i] != webClient){
+                connections[i]->sendBinary(buffer);
+            }
             
         }
         //        free(compressed);
@@ -231,6 +232,7 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
             
             cout<<"got message ignore"<<args.message<<endl;
             if(!args.json["id"].isNull()){
+                webClient = &args.conn;
                 toLoad = defaultPath+"/"+args.json["id"].asString()+".jpg";
                 bSendImage = true;
             }
