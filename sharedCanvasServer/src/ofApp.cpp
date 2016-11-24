@@ -47,6 +47,7 @@ void ofApp::setup(){
     music.setVolume(7.5f);
     music.setLoop(true);
     music.play();
+    webClient = NULL;
 }
 void ofApp::onParaChanged(int &i){
     server.send("{\"delay\":" + ofToString( i ) + "}" );
@@ -77,8 +78,9 @@ void ofApp::update(){
         //        server.sendBinary(buffer.getData(), size);
         vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
         for ( int i=0; i<connections.size(); i++){
-            
-            connections[i]->sendBinary(buffer);
+            if(connections[i] != webClient){
+                connections[i]->sendBinary(buffer);
+            }
             
         }
         //        free(compressed);
@@ -242,6 +244,7 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
             if(!args.json["id"].isNull()){
                 toLoad = defaultPath+"/"+args.json["id"].asString()+".jpg";
                 bSendImage = true;
+                webClient = &args.conn;
             }
             //            if(args.json["erase"].isNull()) {
             //                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );
