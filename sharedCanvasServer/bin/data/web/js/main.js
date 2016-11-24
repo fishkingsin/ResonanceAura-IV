@@ -15,7 +15,6 @@ var strokeW = 1;
 var mode = 1;
 var lastIndex = 0;
 var dMode = 1;
-var drawIndex = 0;
 var imgId = 10;
 //line
 var lineArray = [];
@@ -36,6 +35,8 @@ function addLine(x, y) {
 }
 //circle
 var cirArray = [];
+var cirState = 1, cirLState = 0;
+var drawIndex = 0;
 var circleRX = 0, circleRY = 0;
 function Cir() {
 	this.x = 0;
@@ -51,6 +52,8 @@ function addCir(x, y) {
 }
 //triangle
 var triArray = [];
+var triState = 0, triLState=0;
+var drawTriIndex = 0;
 function Tri() {
 	this.x = 0;
 	this.y = 0;
@@ -68,6 +71,8 @@ function addTri(x, y) {
 
 //rect
 var sqArray = [];
+var sqState = 0,sqLState=0;
+var drawSqIndex = 0;
 function Sq() {
 	this.x = 0;
 	this.y = 0;
@@ -85,6 +90,8 @@ function addSq(x, y) {
 
 //hex
 var hexArray = [];
+var hexState = 0,hexLState=0;
+var drawHexIndex = 0;
 function Hex() {
 	this.x = 0;
 	this.y = 0;
@@ -110,7 +117,7 @@ $(window).load(function() {
 	// statusDiv	= document.getElementById("status");
 
 	canvas 		= document.getElementById("sketchCanvas");
-	mCanvas = document.getElementById("mirror");
+	// mCanvas = document.getElementById("mirror");
 	if (canvas.getContext) {
 		canvas.onmousedown 	= onMouseDown;
 		canvas.onmouseup 	= onMouseUp;
@@ -119,12 +126,11 @@ $(window).load(function() {
 		canvas.addEventListener("touchend", onMouseUp, false);
 		canvas.addEventListener("touchmove", onMouseMoved, false);
 		ctx			= canvas.getContext('2d');
-		c 			= mCanvas.getContext('2d');
-		canvas.width  = window.innerWidth-150;
-		canvas.height = window.innerHeight;
-		mirror.width = window.innerWidth-150;;
-		mirror.height = window.innerHeight;
-		c.scale(1,1);
+		// c 			= mCanvas.getContext('2d');
+		canvas.width  = 824;
+		canvas.height = window.innerHeight-43;
+		// mirror.width = window.innerWidth-150;
+		// mirror.height = window.innerHeight;
 		// canvas.width  = 450;
 		// canvas.height = 450;
 		//get the screen resize offset
@@ -146,12 +152,16 @@ $(window).load(function() {
 		alert("Sorry, your browser doesn't support canvas!");
 	}
 
-	$("#eraseIcon").on("mouseup touchend", changeErase);
+	$(".eraseIcon").on("mouseup touchend", changeErase);
 	$("#circleIcon").on("mouseup touchend", changeCir);
 	$("#triIcon").on("mouseup touchend", changeTri);
 	$("#sqIcon").on("mouseup touchend", changeSq);
 	$("#hexIcon").on("mouseup touchend", changeHex);
-	$("#okIcon").on("mouseup touchend", saveImg);
+	$("#circleIconL").on("mouseup touchend", changeCirL);
+	$("#triIconL").on("mouseup touchend", changeTriL);
+	$("#sqIconL").on("mouseup touchend", changeSqL);
+	$("#hexIconL").on("mouseup touchend", changeHexL);
+	$(".okIcon").on("mouseup touchend", saveImg);
 });
 
 var BASE64_MARKER = ';base64,';
@@ -173,72 +183,13 @@ function convertDataURIToBinary(dataURI) {
 function saveImg(e) {
 	var dataURL = canvas.toDataURL('image/jpeg');
 	var binStr = convertDataURIToBinary(dataURL);
-	 console.log(binStr);
-	// if(binStr.length > 50000) {
-	// 	// var jjj = {iii:binStr};
-	// 	//   socket.send(JSON.stringify(jjj));
-	// 	var startB = {start:binStr.length};
-	// 	var endB = {end:1};
-	// 	var split = Math.floor(binStr.length*.5);
-	// 	var array = new Uint8Array(new ArrayBuffer(split));
-	// 	var array2 = new Uint8Array(new ArrayBuffer(split+1));
-	// 	socket.send(JSON.stringify(startB));
-	// 	for(var i = 0; i < split; i++) {
-	// 	 	    array[i] = binStr[i];
-	// 	 	}
-	// 	 	socket.send(array);
-	// 	//  	for(var i = split; i < split*2; i++) {
-	// 	//  	    array2[i] = binStr[i];
-	// 	//  	}
-	// 	//  	socket.send(array2);
-	// 	//  socket.send(JSON.stringify(endB));
-	// 	// var startB = {start:binStr.length};
-	// 	// var endB = {end:1};
-	// 	// socket.send(JSON.stringify(startB));
-	// 	// var binLength = Math.floor(binStr.length/50000);
-	// 	// console.log(binLength);
-	// 	// for(var counter=0;counter<binLength;counter++) {
-	// 	//  	var array = new Uint8Array(new ArrayBuffer(500000));
-	// 	//  	var start = counter*500000;
-	// 	//  	var end = (counter+1)*500000;
-	// 	//  	for(var i = 0; i < binStr.length; i++) {
-	// 	//  	    array[i] = binStr[i];
-	// 	//  	}
-	// 	//  	socket.send(array);
-	// 	//  	console.log(counter);
-	// 	// }
-	// 	// var leftLength = binStr.length%50000;
-	// 	// console.log(leftLength);
-	// 	// var leftArray = new Uint8Array(new ArrayBuffer(leftLength));
-	// 	// for(var ii=binLength*50000;ii<binLength*50000+leftLength;ii++) {
-	// 	// 	leftArray[ii] = binStr[ii];
-	// 	// }
-	// 	// socket.send(leftArray);
-	// 	// socket.send(JSON.stringify(endB));
-	// 	//socket.send(binStr);
-	// } else {
-	 	//socket.send(binStr);
-	 	//var jjj = {iii:binStr};
-		 // socket.send(JSON.stringify(jjj));
-	//}
-	// $.post('/send.php',
- //    {
- //        id : imgId,
- //        data : binStr
- //    }, function(data) {
- //       console.log(data);
- //       if(data=="success") {
- //       	//var d = {id:imgId};
- //       	//socket.send(canvas.toDataURL("image/jpeg"));
- //       }
- //    });
-
+	var da = new Date();
+	imgId = (da.getTime()).toString();
     $.post('/save.php',
     {
         id : imgId,
         img : canvas.toDataURL("image/jpeg")
     }, function(data) {
-       //console.log(data);
        if(data=="success") {
        	var d = {id:imgId};
        	socket.send(JSON.stringify(d));
@@ -261,16 +212,13 @@ function sendMessageForm(){
 }
 
 function changeDraw(e) {
-	//dMode = 0;
-	cirArray=[];
-	hexArray=[];
-	sqArray=[];
-	triArray=[];
+	dMode = 0;
+
 }
 
 function changeErase(e) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	c.clearRect(0, 0, mCanvas.width, mCanvas.height);
+	//c.clearRect(0, 0, mCanvas.width, mCanvas.height);
 	cirArray=[];
 	hexArray=[];
 	sqArray=[];
@@ -279,25 +227,171 @@ function changeErase(e) {
 
 function changeCir(e) {
 	dMode = 1;	
+	if(cirState==0) {
+		cirState=1;
+		cirLState=0;
+		triState=0;
+		sqState=0;
+		hexState=0;
+		triLState=0;
+		sqLState=0;
+		hexLState=0;
+		$(this).removeClass("state0 leftB").addClass("state1 rightB bottomB");
+		$("#hexIcon,#sqIcon,#triIcon").removeClass("state1 rightB").addClass("state0 leftB");
+		$("#triIcon").removeClass("bottomB");
+		$("#sqIcon").removeClass("bottomB");
+		$("#sqIconL,#triIconL,#circleIconL,#hexIconL").removeClass("state1 leftB bottomB").addClass("state0 rightB");
+		$("#hexIconL").addClass("bottomB");
+	}
+}
+
+function changeCirL(e) {
+	dMode = 1;	
+	if(cirLState==0) {
+		cirLState=1;
+		cirState=0;
+		triState=0;
+		sqState=0;
+		hexState=0;
+		triLState=0;
+		sqLState=0;
+		hexLState=0;
+		$(this).removeClass("state0 rightB").addClass("state1 leftB bottomB");
+		$("#hexIconL,#sqIconL,#triIconL").removeClass("state1 leftB").addClass("state0 rightB");
+		$("#triIconL").removeClass("bottomB");
+		$("#sqIconL").removeClass("bottomB");
+		$("#hexIcon,#sqIcon,#triIcon,#circleIcon").removeClass("state1 rightB bottomB").addClass("state0 leftB");
+		$("#hexIcon").addClass("bottomB");
+	}
 }
 
 function changeTri(e) {
 	dMode = 2;
+	if(triState==0) {
+		cirState=0;
+		triState=1;
+		sqState=0;
+		hexState=0;
+		cirLState=0;
+		triLState=0;
+		sqLState=0;
+		hexLState=0;
+		$(this).removeClass("state0 leftB").addClass("state1 rightB bottomB");
+		$("#hexIcon,#sqIcon,#circleIcon").removeClass("state1 rightB").addClass("state0 leftB");
+		$("#sqIcon").removeClass("bottomB");
+		$("#circleIcon").addClass("bottomB");
+		$("#sqIconL,#triIconL,#circleIconL,#hexIconL").removeClass("state1 leftB bottomB").addClass("state0 rightB");
+		$("#hexIconL").addClass("bottomB");
+	} 
+}
+
+function changeTriL(e) {
+	dMode = 2;	
+	if(triLState==0) {
+		cirLState=0;
+		cirState=0;
+		triState=0;
+		sqState=0;
+		hexState=0;
+		triLState=1;
+		sqLState=0;
+		hexLState=0;
+		$(this).removeClass("state0 rightB").addClass("state1 leftB bottomB");
+		$("#hexIconL,#sqIconL,#circleIconL").removeClass("state1 leftB").addClass("state0 rightB");
+		$("#sqIconL").removeClass("bottomB");
+		$("#circleIconL").addClass("bottomB");
+		$("#hexIcon,#sqIcon,#triIcon,#circleIcon").removeClass("state1 rightB bottomB").addClass("state0 leftB");
+		$("#hexIcon").addClass("bottomB");
+	}
 }
 
 function changeSq(e) {
 	dMode = 3;
+	if(sqState==0) {
+		cirState=0;
+		triState=0;
+		hexState=0;
+		sqState=1;
+		cirLState=0;
+		triLState=0;
+		sqLState=0;
+		hexLState=0;
+		$(this).removeClass("state0 leftB").addClass("state1 rightB bottomB");
+		$("#hexIcon,#triIcon,#circleIcon").removeClass("state1 rightB").addClass("state0 leftB");
+		$("#triIcon").addClass("bottomB");
+		$("#circleIcon").removeClass("bottomB");
+		$("#sqIconL,#triIconL,#circleIconL,#hexIconL").removeClass("state1 leftB bottomB").addClass("state0 rightB");
+		$("#hexIconL").addClass("bottomB");
+	} 
+}
+
+function changeSqL(e) {
+	dMode = 3;	
+	if(sqLState==0) {
+		cirLState=0;
+		cirState=0;
+		triState=0;
+		sqState=0;
+		hexState=0;
+		triLState=0;
+		sqLState=1;
+		hexLState=0;
+		$(this).removeClass("state0 rightB").addClass("state1 leftB bottomB");
+		$("#hexIconL,#triIconL,#circleIconL").removeClass("state1 leftB").addClass("state0 rightB");
+		$("#triIconL").addClass("bottomB");
+		$("#circleIconL").removeClass("bottomB");
+		$("#hexIcon,#sqIcon,#triIcon,#circleIcon").removeClass("state1 rightB bottomB").addClass("state0 leftB");
+		$("#hexIcon").addClass("bottomB");
+	}
 }
 
 function changeHex(e) {
 	dMode = 4;
+	if(hexState==0) {
+		cirState=0;
+		triState=0;
+		sqState=0;
+		hexState=1;
+		cirLState=0;
+		triLState=0;
+		sqLState=0;
+		hexLState=0;
+		$(this).removeClass("state0 leftB").addClass("state1 rightB bottomB");
+		$("#sqIcon,#triIcon,#circleIcon").removeClass("state1 rightB").addClass("state0 leftB");
+		$("#sqIcon").addClass("bottomB");
+		$("#triIcon").removeClass("bottomB");
+		$("#circleIcon").removeClass("bottomB");
+		$("#sqIconL,#triIconL,#circleIconL,#hexIconL").removeClass("state1 leftB bottomB").addClass("state0 rightB");
+		$("#hexIconL").addClass("bottomB");
+	}
+}
+
+function changeHexL(e) {
+	dMode = 4;	
+	if(hexLState==0) {
+		cirLState=0;
+		cirState=0;
+		triState=0;
+		sqState=0;
+		hexState=0;
+		triLState=0;
+		sqLState=0;
+		hexLState=1;
+		$(this).removeClass("state0 rightB").addClass("state1 leftB bottomB");
+		$("#sqIconL,#triIconL,#circleIconL").removeClass("state1 leftB").addClass("state0 rightB");
+		$("#sqIconL").addClass("bottomB");
+		$("#triIconL").removeClass("bottomB");
+		$("#circleIconL").removeClass("bottomB");
+		$("#hexIcon,#sqIcon,#triIcon,#circleIcon").removeClass("state1 rightB bottomB").addClass("state0 leftB");
+		$("#hexIcon").addClass("bottomB");
+	}
 }
 
 var bMouseDown = false;
 function onMouseDown( e ){
 	mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX);
 	mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY);
-	
+	mouseX -=100;
 	
 	//get the new draw point
 	//
@@ -308,15 +402,17 @@ function onMouseDown( e ){
 			
 			addLine(mouseX, mouseY);
 		} else if(dMode == 1) {
-
 			addCir(mouseX, mouseY);
 			drawIndex = cirArray.length-1;
 		} else if(dMode == 2) {
 			addTri(mouseX, mouseY);
+			drawTriIndex = triArray.length-1;
 		}  else if(dMode == 3) {
 			addSq(mouseX, mouseY);
+			drawSqIndex = sqArray.length-1;
 		}  else if(dMode == 4) {
 			addHex(mouseX, mouseY);
+			drawHexIndex = hexArray.length-1;
 		}
 	//}
 	renderCanvas();
@@ -326,6 +422,7 @@ function onMouseDown( e ){
 function onMouseMoved( e ){
 	mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX);
 	mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY);
+	mouseX -=100;
 	if ( bMouseDown ){//for mouse drag draw function
 		if(dMode == 0) {
 			//onMouseDraw( mouseX, mouseY );
@@ -335,23 +432,26 @@ function onMouseMoved( e ){
 		} else if(dMode == 1) {
 			var index = cirArray.length-1;
 			cirArray[index].r = 10 + (Math.abs(mouseX-cirArray[index].x)>Math.abs(mouseY-cirArray[index].y)?Math.abs(mouseX-cirArray[index].x):Math.abs(mouseY-cirArray[index].y));
-			addCir(cirArray[drawIndex].x, cirArray[drawIndex].y);
+			if(cirLState==1) addCir(cirArray[drawIndex].x, cirArray[drawIndex].y);
 		} else if(dMode == 2) {
 			var index = triArray.length-1;
 			triArray[index].w = 10 + (Math.abs(mouseX-triArray[index].x)>Math.abs(mouseY-triArray[index].y)?Math.abs(mouseX-triArray[index].x):Math.abs(mouseY-triArray[index].y));
 			triArray[index].h = Math.sqrt(Math.pow(triArray[index].w,2)-Math.pow(triArray[index].w*.5, 2));
 			triArray[index].a = Math.atan2(mouseY-triArray[index].y, mouseX-triArray[index].x);
 			triArray[index].a = triArray[index].a*180/Math.PI+90;
+			if(triLState==1) addTri(triArray[drawTriIndex].x, triArray[drawTriIndex].y);
 		}  else if(dMode == 3) {
 			var index = sqArray.length-1;
 			sqArray[index].w = 10 + (Math.abs(mouseX-sqArray[index].x)>Math.abs(mouseY-sqArray[index].y)?Math.abs(mouseX-sqArray[index].x):Math.abs(mouseY-sqArray[index].y));
 			sqArray[index].a = Math.atan2(mouseY-sqArray[index].y, mouseX-sqArray[index].x);
 			sqArray[index].a = sqArray[index].a*180/Math.PI+90;
+			if(sqLState==1) addSq(sqArray[drawSqIndex].x, sqArray[drawSqIndex].y);
 		}  else if(dMode == 4) {
 			var index = hexArray.length-1;
 			hexArray[index].w = 10 + (Math.abs(mouseX-hexArray[index].x)>Math.abs(mouseY-hexArray[index].y)?Math.abs(mouseX-hexArray[index].x):Math.abs(mouseY-hexArray[index].y));
 			hexArray[index].a = Math.atan2(mouseY-hexArray[index].y, mouseX-hexArray[index].x);
 			hexArray[index].a = hexArray[index].a*180/Math.PI+90;
+			if(hexLState==1) addHex(hexArray[drawHexIndex].x, hexArray[drawHexIndex].y);
 		}
 	}
 	renderCanvas();
@@ -360,12 +460,22 @@ function onMouseMoved( e ){
 function onMouseUp( e ){
 	mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX);
 	mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY);
+	mouseX -=100;
 	bMouseDown = false;
 	//onMouseDraw(-1, -1);
 	if(dMode == 0) {
 	} else if(dMode == 1) {
 		var index = cirArray.length-1;
-		cirArray[index].r = 10 + (Math.abs(mouseX-cirArray[index].x)>Math.abs(mouseY-cirArray[index].y)?Math.abs(mouseX-cirArray[index].x):Math.abs(mouseY-cirArray[index].y));
+		//if(cirState==2) cirArray[index].r = 10 + (Math.abs(mouseX-cirArray[index].x)>Math.abs(mouseY-cirArray[index].y)?Math.abs(mouseX-cirArray[index].x):Math.abs(mouseY-cirArray[index].y));
+	} else if(dMode == 2) {
+		var index = triArray.length-1;
+		//if(triState==2) triArray[index].w = 10 + (Math.abs(mouseX-triArray[index].x)>Math.abs(mouseY-triArray[index].y)?Math.abs(mouseX-triArray[index].x):Math.abs(mouseY-triArray[index].y));
+	} else if(dMode == 3) {
+		var index = sqArray.length-1;
+		//if(sqState==2) sqArray[index].w = 10 + (Math.abs(mouseX-sqArray[index].x)>Math.abs(mouseY-sqArray[index].y)?Math.abs(mouseX-sqArray[index].x):Math.abs(mouseY-sqArray[index].y));
+	} else if(dMode == 4) {
+		var index = hexArray.length-1;
+		//if(hexState==2) hexArray[index].w = 10 + (Math.abs(mouseX-hexArray[index].x)>Math.abs(mouseY-hexArray[index].y)?Math.abs(mouseX-hexArray[index].x):Math.abs(mouseY-hexArray[index].y));
 	}
 	//renderCanvas();
 }
@@ -408,7 +518,7 @@ function saveDrawSpt(x,y) {
 function renderCanvas(){
 	if ( ctx == null ) return;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	c.clearRect(0, 0, mCanvas.width, mCanvas.height);
+	//c.clearRect(0, 0, mCanvas.width, mCanvas.height);
 	drawLine();
 	drawCircle();
 	drawTri();
@@ -444,11 +554,11 @@ function drawCircle() {
 		ctx.arc(cirArray[i].x, cirArray[i].y,cirArray[i].r, 0, 2*Math.PI);
 		ctx.stroke();
 
-		c.beginPath();
-		c.strokeStyle="#FFFFFF";
-		c.lineWidth=8;
-		c.arc(cirArray[i].x, cirArray[i].y,cirArray[i].r, 0, 2*Math.PI);
-		c.stroke();
+		// c.beginPath();
+		// c.strokeStyle="#FFFFFF";
+		// c.lineWidth=8;
+		// c.arc(cirArray[i].x, cirArray[i].y,cirArray[i].r, 0, 2*Math.PI);
+		// c.stroke();
 	}
 }
 

@@ -30,15 +30,21 @@ void ofApp::setup(){
     
     drawings.insert( make_pair( d->_id, d ));
     panel.setup();
-    delay.set("delay", 0,0,1000);
+    delay.set("delay", 240,0,1000);
     panel.add(delay);
     delay.addListener(this, &ofApp::onParaChanged);
     
     lineWidth.set("lineWidth", 1,1,10);
     panel.add(lineWidth);
+
     lineWidth.addListener(this, &ofApp::onLineWidthParaChanged);
     bSendImage = false;
     locked = needToLoad = false;
+    
+    music.load("music.mp3");
+    music.setVolume(7.5f);
+    music.setLoop(true);
+    music.play();
 }
 void ofApp::onParaChanged(int &i){
     server.send("{\"delay\":" + ofToString( i ) + "}" );
@@ -90,6 +96,7 @@ void ofApp::update(){
         locked = false;
         
     }
+    	ofSoundUpdate();
     
 }
 
@@ -176,6 +183,7 @@ void ofApp::onOpen( ofxLibwebsockets::Event& args ){
             }
         }
     }
+    server.send("{\"delay\":240}" );
 }
 
 //--------------------------------------------------------------
@@ -194,7 +202,7 @@ void ofApp::onClose( ofxLibwebsockets::Event& args ){
 
 //--------------------------------------------------------------
 void ofApp::onIdle( ofxLibwebsockets::Event& args ){
-    cout<<"on idle"<<endl;
+//    cout<<"on idle"<<endl;
 }
 
 //--------------------------------------------------------------
@@ -227,7 +235,7 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
             
             cout<<"got message ignore"<<args.message<<endl;
             if(!args.json["id"].isNull()){
-                toLoad = ofToDataPath("web/"+args.json["id"].asString()+".jpg",true);
+                toLoad = ofToDataPath("web/images/drawing/"+args.json["id"].asString()+".jpg",true);
                 bSendImage = true;
             }
             //            if(args.json["erase"].isNull()) {

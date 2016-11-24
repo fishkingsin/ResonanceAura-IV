@@ -103,6 +103,7 @@ public:
     ofImage currentImage;
     ofxTurboJpeg turbo;
     
+    ofSoundPlayer  music;
     
 };
 
