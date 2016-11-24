@@ -106,7 +106,7 @@ public:
     ofSoundPlayer  music;
     string defaultPath;
     ofPoint resizeDimension;
-    ofxLibwebsockets::Connection *webClient;
+    string webClientIP;
     
 };
 
