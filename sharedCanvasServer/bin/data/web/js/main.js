@@ -193,6 +193,12 @@ function saveImg(e) {
        if(data=="success") {
        	var d = {id:imgId};
        	socket.send(JSON.stringify(d));
+       	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	//c.clearRect(0, 0, mCanvas.width, mCanvas.height);
+	cirArray=[];
+	hexArray=[];
+	sqArray=[];
+	triArray=[];
        }
     });
 }
