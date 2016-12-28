@@ -1,5 +1,5 @@
 <SETTINGS>
-    <SERVER>localhost</SERVER>
+    <SERVER>10.0.1.25</SERVER>
     <PORT>9092</PORT>
     <WIDTH>360</WIDTH>
     <HEIGHT>144</HEIGHT>

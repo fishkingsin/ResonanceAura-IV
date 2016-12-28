@@ -12,6 +12,9 @@ void ofApp::setup(){
     settings.load("settings.xml");
     
     options.port = settings.getValue("SETTINGS:PORT", 9092);
+    defaultPath = settings.getValue("SETTINGS:PATH", ofToDataPath("web",true));
+    resizeDimension.set( settings.getValue("SETTINGS:RESIZE:WIDTH", 360), settings.getValue("SETTINGS:RESIZE:HEIGHT", 144));
+                        
     bConnected = server.setup( options );
     
     
@@ -36,7 +39,6 @@ void ofApp::setup(){
     
     lineWidth.set("lineWidth", 1,1,10);
     panel.add(lineWidth);
-
     lineWidth.addListener(this, &ofApp::onLineWidthParaChanged);
     bSendImage = false;
     locked = needToLoad = false;
@@ -45,6 +47,7 @@ void ofApp::setup(){
     music.setVolume(7.5f);
     music.setLoop(true);
     music.play();
+    webClientIP = "";
 }
 void ofApp::onParaChanged(int &i){
     server.send("{\"delay\":" + ofToString( i ) + "}" );
@@ -69,13 +72,15 @@ void ofApp::update(){
         turbo.load( toLoad, currentImage );
         unsigned long size;
         ofBuffer buffer;
+        currentImage.resize(resizeDimension.x,resizeDimension.y);
         //        unsigned char * compressed = turbo.compress(currentImage,100,&size);
         turbo.compress(currentImage, 100, buffer);
         //        server.sendBinary(buffer.getData(), size);
         vector<ofxLibwebsockets::Connection *> connections = server.getConnections();
         for ( int i=0; i<connections.size(); i++){
-            
-            connections[i]->sendBinary(buffer);
+            if(connections[i]->getClientIP().compare( webClientIP)!=0){
+                connections[i]->sendBinary(buffer);
+            }
             
         }
         //        free(compressed);
@@ -96,7 +101,9 @@ void ofApp::update(){
         locked = false;
         
     }
+#ifdef TARGET_OSX
     	ofSoundUpdate();
+#endif
     
 }
 
@@ -202,7 +209,7 @@ void ofApp::onClose( ofxLibwebsockets::Event& args ){
 
 //--------------------------------------------------------------
 void ofApp::onIdle( ofxLibwebsockets::Event& args ){
-//    cout<<"on idle"<<endl;
+    cout<<"on idle"<<endl;
 }
 
 //--------------------------------------------------------------
@@ -235,8 +242,9 @@ void ofApp::onMessage( ofxLibwebsockets::Event& args ){
             
             cout<<"got message ignore"<<args.message<<endl;
             if(!args.json["id"].isNull()){
-                toLoad = ofToDataPath("web/images/drawing/"+args.json["id"].asString()+".jpg",true);
+                toLoad = defaultPath+"/"+args.json["id"].asString()+".jpg";
                 bSendImage = true;
+                webClientIP = args.conn.getClientIP();
             }
             //            if(args.json["erase"].isNull()) {
             //                ofPoint point = ofPoint( args.json["point"]["x"].asFloat(), args.json["point"]["y"].asFloat() );

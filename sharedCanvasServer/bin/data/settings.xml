@@ -1,3 +1,8 @@
 <SETTINGS>
 	<PORT>9092</PORT>
+	<PATH>web/images/drawing/</PATH>
+	<RESIZE>
+		<WIDTH>360</WIDTH>
+		<HEIGHT>144</HEIGHT>
+	</RESIZE>
 </SETTINGS>

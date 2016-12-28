@@ -356,11 +356,13 @@ void ofApp::onIdle( ofxLibwebsockets::Event& args ){
 //--------------------------------------------------------------
 void ofApp::onMessage( ofxLibwebsockets::Event& args ){
     try{
+        
         cout<<"got message "<<args.message<<endl;
         // trace out string messages or JSON messages!
         if ( args.isBinary){
             if ( locked ) return;
             buff.clear();
+            
             buff.set(args.data.getData(), args.data.size());
             locked = true;
             needToLoad = true;

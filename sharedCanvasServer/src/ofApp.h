@@ -104,6 +104,9 @@ public:
     ofxTurboJpeg turbo;
     
     ofSoundPlayer  music;
+    string defaultPath;
+    ofPoint resizeDimension;
+    string webClientIP;
     
 };
 
