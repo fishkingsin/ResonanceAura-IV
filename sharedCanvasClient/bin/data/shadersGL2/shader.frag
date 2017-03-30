@@ -1,5 +1,5 @@
 
-precision highp float;
+//precision highp float;
 
 uniform sampler2D tex0;
 

@@ -32,3 +32,5 @@ example_server_sharedcanvas/build
 example_basic_ip_video_server/build
 ifva_everywhere_resonanceAura/build
 sharedCanvasServer/sharedCanvasServer.xcodeproj/project.xcworkspace
+
+sharedCanvasServer/bin/date/web/images/drawing/*
